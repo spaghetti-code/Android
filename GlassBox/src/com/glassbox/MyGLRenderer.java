@@ -26,7 +26,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer
 	private final float[] lightPosition = { 0.0f, 0.0f, 2.0f, 1.0f };
 
 	// Blending
-	boolean blendingEnabled = true; // Is blending on?
+	boolean blendingEnabled = true; // Is blending on? deveria...
 
 	// Constructor
 	public MyGLRenderer(Context context)
