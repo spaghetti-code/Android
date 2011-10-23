@@ -7,22 +7,16 @@ import android.content.Context;
 /**
  * Seção transversal do tunel.
  * 
- * TODO testar desempenho redesenhando várias vezes um único elemento.
- * 
  * @author Francesco Bertolino
  */
 public class Section
 {
-	private final BaseElement[] elements = new BaseElement[8];
+	private final BaseElement[] elements = new BaseElement[2];
 
 	public Section(int texture1, int texture2)
 	{
-		boolean even = true;
-		for (int i = 0; i < this.elements.length; i++)
-		{
-			this.elements[i] = new BaseElement(even ? texture1 : texture2);
-			even = !even;
-		}
+		this.elements[0] = new BaseElement(texture1);
+		this.elements[1] = new BaseElement(texture2);
 	}
 
 	public void draw(GL10 gl)
@@ -30,20 +24,10 @@ public class Section
 		gl.glPushMatrix();
 
 		gl.glRotatef(-90, 1.0f, 0.0f, 0.0f);
+
 		this.elements[0].draw(gl);
-
-		for (int i = 1; i < this.elements.length; i++)
-			drawNextElement(gl, i);
-
-		//		gl.glTranslatef(1.0f, 0.0f, 0.0f);
-		//		gl.glRotatef(-45, 0.0f, 1.0f, 0.0f);
-		//		gl.glTranslatef(1.0f, 0.0f, 0.0f);
-		//		this.elements[1].draw(gl);
-		//
-		//		gl.glTranslatef(1.0f, 0.0f, 0.0f);
-		//		gl.glRotatef(-45, 0.0f, 1.0f, 0.0f);
-		//		gl.glTranslatef(1.0f, 0.0f, 0.0f);
-		//		this.elements[2].draw(gl);
+		for (int i = 1; i < 8; i++)
+			drawNextElement(gl, (i + 2) % 2);
 
 		gl.glPopMatrix();
 	}

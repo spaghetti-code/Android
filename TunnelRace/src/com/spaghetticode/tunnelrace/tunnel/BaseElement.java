@@ -58,6 +58,9 @@ public class BaseElement
 		gl.glTexCoordPointer(2, GL10.GL_FLOAT, 0, this.textureBuffer);
 
 		gl.glBindTexture(GL10.GL_TEXTURE_2D, this.textureIDs[0]);
+
+		// após profiling, o uso de glDrawArrays em vez que glDrawElements
+		// resultou bem melhor
 		gl.glDrawArrays(GL10.GL_TRIANGLE_STRIP, 0, this.vertices.length / 3);
 
 		gl.glDisableClientState(GL10.GL_TEXTURE_COORD_ARRAY);
