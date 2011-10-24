@@ -8,6 +8,7 @@ import android.content.Context;
 import com.gigio.utils.BasicGLRenderer;
 import com.spaghetticode.tunnelrace.R;
 import com.spaghetticode.tunnelrace.command.SpeedTouchListener;
+import com.spaghetticode.tunnelrace.tunnel.SectionKind;
 import com.spaghetticode.tunnelrace.tunnel.Ship;
 import com.spaghetticode.tunnelrace.tunnel.Tunnel;
 
@@ -23,11 +24,14 @@ public class TunnelRenderer extends BasicGLRenderer
 
 	private float r = 0.0f;
 
+	private final float BEND_FACTOR = 0.0175f;
+
 	public TunnelRenderer(final Context context,
 			final SpeedTouchListener listener)
 	{
 		super(context);
 		this.tunnel = new Tunnel(R.drawable.arrows_and_bricks, R.drawable.steel);
+		this.tunnel.setZStart(this.z);
 		this.ship = new Ship();
 		this.listener = listener;
 	}
@@ -37,17 +41,21 @@ public class TunnelRenderer extends BasicGLRenderer
 	{
 		super.onDrawFrame(gl);
 
-		if (this.z > 70)
-		{
-			if (this.listener.getSpeed() > 0)
-				this.r += 0.3f;
-			else if (this.listener.getSpeed() < 0)
-				this.r -= 0.3f;
-		} else
+		if (this.tunnel.getSectionKind(-this.z).equals(SectionKind.PASSAGE))
 			this.r = 0.0f;
+		// FIXME pegar o angulo de rotação da section!
+		else if (this.tunnel.getSectionKind(-this.z).equals(SectionKind.BEND))
+		{
+			final int sectionIndex = this.tunnel.getSectionIndex(-this.z);
+			if (this.listener.getSpeed() > 0)
+				this.r += this.BEND_FACTOR * sectionIndex;
+			else if (this.listener.getSpeed() < 0)
+				this.r -= this.BEND_FACTOR * sectionIndex;
+		}
+		//Log.i("rotation:", "" + this.r);
 
-		gl.glRotatef(this.r, 0.0f, 1.0f, 0.0f);
 		gl.glTranslatef(0.0f, -2.5f, this.z);
+		gl.glRotatef(this.r, 0.0f, 1.0f, 0.0f);
 
 		this.z += this.listener.getSpeed();
 		if (this.z < -4.0f)
@@ -66,6 +74,9 @@ public class TunnelRenderer extends BasicGLRenderer
 		//		gl.glTranslatef(0.0f, 1.0f, s);
 		//		gl.glRotatef(-45, 1.0f, 0.0f, 0.0f);
 		//		this.ship.draw(gl);
+
+		//		Log.i("section", "" + this.tunnel.getSectionKind(s) + " - "
+		//				+ this.tunnel.getSectionIndex(s));
 	}
 
 	@Override

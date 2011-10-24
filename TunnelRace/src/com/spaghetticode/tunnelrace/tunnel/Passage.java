@@ -2,37 +2,31 @@ package com.spaghetticode.tunnelrace.tunnel;
 
 import javax.microedition.khronos.opengles.GL10;
 
-import android.content.Context;
-
 /**
- * Passagem do tunel, constituida de uma sequência de
- * seções.
+ * Passagem reta do tunel.
  * 
  * @author Francesco Bertolino
  */
-public class Passage
+public class Passage extends SectionSequence
 {
-	private final Section section;
-
-	private final int nSections;
-
+	/**
+	 * @param sections
+	 * @param texture1
+	 * @param texture2
+	 */
 	public Passage(final int sections, final int texture1, final int texture2)
 	{
-		this.nSections = sections;
-		this.section = new Section(texture1, texture2);
+		super(SectionKind.PASSAGE, sections, texture1, texture2, 2.0f);
 	}
 
+	@Override
 	public void draw(GL10 gl)
 	{
 		for (int i = 0; i < this.nSections; i++)
 		{
-			gl.glTranslatef(0.0f, 0.0f, -2.0f);
+			gl.glTranslatef(0.0f, 0.0f, -this.translationStep);
 			this.section.draw(gl);
 		}
 	}
 
-	public void loadTexture(GL10 gl, Context context)
-	{
-		this.section.loadTexture(gl, context);
-	}
 }

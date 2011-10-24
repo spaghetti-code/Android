@@ -11,6 +11,10 @@ import android.content.Context;
  */
 public class Section
 {
+	/**
+	 * Os dois paineis que, altrenados com textures diferentes, 
+	 * constituem a seção.
+	 */
 	private final BaseElement[] elements = new BaseElement[2];
 
 	public Section(int texture1, int texture2)
@@ -45,4 +49,5 @@ public class Section
 		for (int i = 0; i < this.elements.length; i++)
 			this.elements[i].loadTexture(gl, context);
 	}
+
 }
