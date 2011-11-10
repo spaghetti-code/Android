@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
+    <TextView android:layout_height="wrap_content" android:layout_width="wrap_content" android:id="@+id/textView1" android:textAppearance="?android:attr/textAppearanceMedium" android:text="@string/select_shape"></TextView>
+    <RadioGroup android:layout_width="fill_parent"
+			android:layout_height="wrap_content" android:orientation="vertical">
+    	<RadioButton android:layout_height="wrap_content" android:layout_width="wrap_content" android:text="@string/square" android:id="@+id/squareBtn"></RadioButton>
+    	<RadioButton android:layout_height="wrap_content" android:layout_width="wrap_content" android:text="@string/cube" android:id="@+id/cubeBtn"></RadioButton>
+    </RadioGroup>
+<Button android:layout_height="wrap_content" android:id="@+id/button1" android:layout_width="wrap_content" android:text="@string/select_picture"></Button>
+
+<Button
+    android:id="@+id/button2"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="@string/take_picture" />
+
+</LinearLayout>
