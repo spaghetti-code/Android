@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schedule id="0" name="Test1">
+	<blocks>
+		<block id="0">
+			<events>
+				<trip id="0" itinerary="0">
+					<startTime>240</startTime>
+					<endTime>270</endTime>
+				</trip>
+				<trip id="1" itinerary="1">
+					<startTime>280</startTime>
+					<endTime>320</endTime>
+				</trip>
+			</events>
+		</block>
+	</blocks>
+</schedule>
