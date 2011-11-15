@@ -5,11 +5,13 @@ import java.util.List;
 
 public class Block extends Base
 {
+	private static final long serialVersionUID = -3754036419906954770L;
+
 	private final List<Trip> trips = new ArrayList<Trip>();
 
 	public Block(final Long id)
 	{
-		super(id);
+		super(id, EKind.BLOCK);
 	}
 
 	public List<Trip> getTrips()
@@ -47,5 +49,13 @@ public class Block extends Base
 	public String toString()
 	{
 		return "" + getId();
+	}
+
+	@Override
+	public boolean equals(Object o)
+	{
+		if (!((Base) o).getKind().equals(EKind.BLOCK))
+			return false;
+		return super.equals(o);
 	}
 }

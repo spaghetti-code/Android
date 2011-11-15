@@ -9,9 +9,12 @@ import android.view.WindowManager;
 import android.widget.TabHost;
 
 import com.wplex.on.R;
+import com.wplex.on.model.BlocksModel;
 
 public class WplexONAndroidActivity extends TabActivity
 {
+	private BlocksModel blocksModel;
+
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState)
@@ -22,6 +25,9 @@ public class WplexONAndroidActivity extends TabActivity
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		setContentView(R.layout.main);
 
+		this.blocksModel = new BlocksModel(getResources().getXml(
+				R.xml.itineraries), getResources().getXml(R.xml.blocks));
+
 		final Resources res = getResources(); // Resource object to get Drawables
 		final TabHost tabHost = getTabHost(); // The activity TabHost
 		TabHost.TabSpec spec; // Resusable TabSpec for each tab
@@ -29,7 +35,6 @@ public class WplexONAndroidActivity extends TabActivity
 
 		// Create an Intent to launch an Activity for the tab (to be reused)
 		intent = new Intent().setClass(this, GraphActivity.class);
-
 		// Initialize a TabSpec for each tab and add it to the TabHost
 		spec = tabHost.newTabSpec("graph")
 				.setIndicator("Graph", res.getDrawable(R.drawable.tab_graph))
@@ -38,6 +43,10 @@ public class WplexONAndroidActivity extends TabActivity
 
 		// Do the same for the other tabs
 		intent = new Intent().setClass(this, TableActivity.class);
+		final Bundle bundle = new Bundle();
+		bundle.putSerializable("blocksModel", this.blocksModel);
+		intent.putExtras(bundle);
+
 		spec = tabHost.newTabSpec("table")
 				.setIndicator("Table", res.getDrawable(R.drawable.tab_table))
 				.setContent(intent);

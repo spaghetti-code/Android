@@ -4,6 +4,8 @@ import com.wplex.on.util.TimeUtil;
 
 public class Trip extends Base
 {
+	private static final long serialVersionUID = -3223398869529811151L;
+
 	private final Itinerary itinerary;
 
 	private final Short startTime;
@@ -12,7 +14,7 @@ public class Trip extends Base
 
 	public Trip(Long id, Itinerary itinerary, Short startTime, Short endTime)
 	{
-		super(id);
+		super(id, EKind.TRIP);
 		this.itinerary = itinerary;
 		this.startTime = startTime;
 		this.endTime = endTime;
@@ -39,5 +41,13 @@ public class Trip extends Base
 		return this.itinerary.toString() + " - "
 				+ TimeUtil.convertTimeToString(this.startTime) + "/"
 				+ TimeUtil.convertTimeToString(this.endTime);
+	}
+
+	@Override
+	public boolean equals(Object o)
+	{
+		if (!((Base) o).getKind().equals(EKind.TRIP))
+			return false;
+		return super.equals(o);
 	}
 }

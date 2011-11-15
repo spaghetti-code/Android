@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-    <string name="hello">Hello World, WplexONAndroidActivity!</string>
     <string name="app_name">WplexONAndroid</string>
-
+    <string name="table_title">Blocks Table</string>
+    <string name="block">Block</string>
+    <string name="line">Line</string>
+    <string name="kind">Kind</string>
+    <string name="direction">Dir.</string>
+    <string name="start">Start</string>
+    <string name="end">End</string>
 </resources>
