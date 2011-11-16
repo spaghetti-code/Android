@@ -11,6 +11,7 @@ import javax.microedition.khronos.opengles.GL10;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.opengl.GLUtils;
 
 /**
@@ -22,7 +23,6 @@ public class TextureUtils
 {
 	/**
 	 * Carrega uma texture.
-	 * Obs: filtro mipmapping.
 	 * Obs: no Kyros, para que tudo funcione, os bitmaps utilizados devem ser quadrados, de lado uma potência
 	 * de 2 (ex: 256x256, 512x512)
 	 * 
@@ -40,14 +40,6 @@ public class TextureUtils
 		{
 			gl.glBindTexture(GL10.GL_TEXTURE_2D, textureIDs[i]);
 
-			//			gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MAG_FILTER,
-			//					GL10.GL_LINEAR);
-			//			gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MIN_FILTER,
-			//					GL10.GL_LINEAR_MIPMAP_NEAREST);
-			//			if (gl instanceof GL11)
-			//				gl.glTexParameterf(GL11.GL_TEXTURE_2D, GL11.GL_GENERATE_MIPMAP,
-			//						GL11.GL_TRUE);
-
 			gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MAG_FILTER,
 					GL10.GL_LINEAR);
 			gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MIN_FILTER,
@@ -57,6 +49,33 @@ public class TextureUtils
 			GLUtils.texImage2D(GL10.GL_TEXTURE_2D, 0, bitmap, 0);
 			bitmap.recycle();
 		}
+		return textureIDs;
+	}
+
+	/**
+	 * Carrega uma texture.
+	 * Obs: no Kyros, para que tudo funcione, os bitmaps utilizados devem ser quadrados, de lado uma potência
+	 * de 2 (ex: 256x256, 512x512)
+	 * 
+	 * @param gl
+	 * @param context
+	 * @param resource array de recursos, tipo R.drawable.image
+	 * @return textureIDs array onde ficam armazenadas as textures
+	 */
+	public static int[] loadTextures(GL10 gl, final Bitmap bitmap)
+	{
+		final int[] textureIDs = new int[1];
+		gl.glGenTextures(1, textureIDs, 0);
+
+		gl.glBindTexture(GL10.GL_TEXTURE_2D, textureIDs[0]);
+
+		gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MAG_FILTER,
+				GL10.GL_LINEAR);
+		gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MIN_FILTER,
+				GL10.GL_LINEAR);
+
+		GLUtils.texImage2D(GL10.GL_TEXTURE_2D, 0, bitmap, 0);
+		bitmap.recycle();
 		return textureIDs;
 	}
 
@@ -106,5 +125,28 @@ public class TextureUtils
 		textureBuffer.put(textureCoords);
 		textureBuffer.position(0);
 		return textureBuffer;
+	}
+
+	/**
+	 * @param bm
+	 * @param newHeight
+	 * @param newWidth
+	 * @return Bitmap redimensionado
+	 */
+	public static Bitmap getResizedBitmap(Bitmap bm, int newHeight, int newWidth)
+	{
+		final int width = bm.getWidth();
+		final int height = bm.getHeight();
+		final float scaleWidth = ((float) newWidth) / width;
+		final float scaleHeight = ((float) newHeight) / height;
+
+		// create a matrix for the manipulation
+		final Matrix matrix = new Matrix();
+		// resize the bit map
+		matrix.postScale(scaleWidth, scaleHeight);
+		// recreate the new Bitmap
+		final Bitmap resizedBitmap = Bitmap.createBitmap(bm, 0, 0, width,
+				height, matrix, false);
+		return resizedBitmap;
 	}
 }
