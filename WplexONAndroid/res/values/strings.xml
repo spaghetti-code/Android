@@ -1,11 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">WplexONAndroid</string>
-    <string name="table_title">Blocks Table</string>
-    <string name="block">Block</string>
-    <string name="line">Line</string>
-    <string name="kind">Kind</string>
-    <string name="direction">Dir.</string>
-    <string name="start">Start</string>
-    <string name="end">End</string>
+    <string name="table_title">Tabela dos Blocos</string>
+    <string name="block">Bloco</string>
+    <string name="block_up">Bloco(/\\)</string>
+    <string name="block_down">Bloco(\\/)</string>
+    <string name="line">Linha</string>
+    <string name="line_up">Linha(/\\)</string>
+    <string name="line_down">Linha(\\/)</string>
+    <string name="kind">Tipo</string>
+    <string name="kind_up">Tipo(/\\)</string>
+    <string name="kind_down">Tipo(\\/)</string>
+    <string name="direction">Sentido</string>
+    <string name="direction_up">Sentido(/\\)</string>
+    <string name="direction_down">Sentido(\\/)</string>
+    <string name="start">Início</string>
+    <string name="start_up">Início(/\\)</string>
+    <string name="start_down">Início(\\/)</string>
+    <string name="end">Fim</string>
+    <string name="end_up">Fim(/\\)</string>
+    <string name="end_down">Fim(\\/)</string>
+    <string name="graph">Gráfico</string>
+    <string name="table">Tabela</string>
 </resources>

@@ -1,12 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <itineraries>
-	<itinerary id="0">
+	<itinerary id="1">
 		<line>210</line>
 		<kind>Normal</kind>
 		<direction>Ida</direction>
 	</itinerary>
-	<itinerary id="1">
+	<itinerary id="2">
 		<line>210</line>
+		<kind>Normal</kind>
+		<direction>Volta</direction>
+	</itinerary>
+	<itinerary id="3">
+		<line>212</line>
+		<kind>Normal</kind>
+		<direction>Ida</direction>
+	</itinerary>
+	<itinerary id="4">
+		<line>212</line>
 		<kind>Normal</kind>
 		<direction>Volta</direction>
 	</itinerary>

@@ -1,15 +1,219 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<schedule id="0" name="Test1">
+<schedule id="1" name="Test1">
 	<blocks>
-		<block id="0">
+		<block id="1">
 			<events>
-				<trip id="0" itinerary="0">
+				<trip id="1" itinerary="1">
 					<startTime>240</startTime>
 					<endTime>270</endTime>
 				</trip>
-				<trip id="1" itinerary="1">
+				<trip id="2" itinerary="2">
 					<startTime>280</startTime>
 					<endTime>320</endTime>
+				</trip>
+				<trip id="3" itinerary="1">
+					<startTime>330</startTime>
+					<endTime>365</endTime>
+				</trip>
+				<trip id="4" itinerary="2">
+					<startTime>365</startTime>
+					<endTime>380</endTime>
+				</trip>
+				<trip id="5" itinerary="1">
+					<startTime>400</startTime>
+					<endTime>450</endTime>
+				</trip>
+				<trip id="6" itinerary="2">
+					<startTime>453</startTime>
+					<endTime>477</endTime>
+				</trip>
+				<trip id="7" itinerary="3">
+					<startTime>481</startTime>
+					<endTime>504</endTime>
+				</trip>
+				<trip id="8" itinerary="4">
+					<startTime>505</startTime>
+					<endTime>535</endTime>
+				</trip>
+			</events>
+		</block>
+		<block id="2">
+			<events>
+				<trip id="1" itinerary="1">
+					<startTime>340</startTime>
+					<endTime>370</endTime>
+				</trip>
+				<trip id="2" itinerary="2">
+					<startTime>380</startTime>
+					<endTime>420</endTime>
+				</trip>
+				<trip id="3" itinerary="1">
+					<startTime>430</startTime>
+					<endTime>465</endTime>
+				</trip>
+				<trip id="4" itinerary="2">
+					<startTime>465</startTime>
+					<endTime>480</endTime>
+				</trip>
+				<trip id="5" itinerary="1">
+					<startTime>500</startTime>
+					<endTime>550</endTime>
+				</trip>
+				<trip id="6" itinerary="2">
+					<startTime>553</startTime>
+					<endTime>577</endTime>
+				</trip>
+				<trip id="7" itinerary="3">
+					<startTime>581</startTime>
+					<endTime>604</endTime>
+				</trip>
+				<trip id="8" itinerary="4">
+					<startTime>605</startTime>
+					<endTime>635</endTime>
+				</trip>
+			</events>
+		</block>
+		<block id="3">
+			<events>
+				<trip id="1" itinerary="1">
+					<startTime>440</startTime>
+					<endTime>470</endTime>
+				</trip>
+				<trip id="2" itinerary="2">
+					<startTime>480</startTime>
+					<endTime>520</endTime>
+				</trip>
+				<trip id="3" itinerary="1">
+					<startTime>530</startTime>
+					<endTime>565</endTime>
+				</trip>
+				<trip id="4" itinerary="2">
+					<startTime>565</startTime>
+					<endTime>580</endTime>
+				</trip>
+				<trip id="5" itinerary="1">
+					<startTime>600</startTime>
+					<endTime>650</endTime>
+				</trip>
+				<trip id="6" itinerary="2">
+					<startTime>653</startTime>
+					<endTime>677</endTime>
+				</trip>
+				<trip id="7" itinerary="3">
+					<startTime>681</startTime>
+					<endTime>704</endTime>
+				</trip>
+				<trip id="8" itinerary="4">
+					<startTime>705</startTime>
+					<endTime>735</endTime>
+				</trip>
+			</events>
+		</block>
+		<block id="4">
+			<events>
+				<trip id="1" itinerary="1">
+					<startTime>540</startTime>
+					<endTime>570</endTime>
+				</trip>
+				<trip id="2" itinerary="2">
+					<startTime>580</startTime>
+					<endTime>620</endTime>
+				</trip>
+				<trip id="3" itinerary="1">
+					<startTime>630</startTime>
+					<endTime>665</endTime>
+				</trip>
+				<trip id="4" itinerary="2">
+					<startTime>665</startTime>
+					<endTime>680</endTime>
+				</trip>
+				<trip id="5" itinerary="1">
+					<startTime>700</startTime>
+					<endTime>750</endTime>
+				</trip>
+				<trip id="6" itinerary="2">
+					<startTime>753</startTime>
+					<endTime>777</endTime>
+				</trip>
+				<trip id="7" itinerary="3">
+					<startTime>781</startTime>
+					<endTime>804</endTime>
+				</trip>
+				<trip id="8" itinerary="4">
+					<startTime>805</startTime>
+					<endTime>835</endTime>
+				</trip>
+			</events>
+		</block>
+		<block id="5">
+			<events>
+				<trip id="1" itinerary="1">
+					<startTime>640</startTime>
+					<endTime>670</endTime>
+				</trip>
+				<trip id="2" itinerary="2">
+					<startTime>680</startTime>
+					<endTime>720</endTime>
+				</trip>
+				<trip id="3" itinerary="1">
+					<startTime>730</startTime>
+					<endTime>765</endTime>
+				</trip>
+				<trip id="4" itinerary="2">
+					<startTime>765</startTime>
+					<endTime>780</endTime>
+				</trip>
+				<trip id="5" itinerary="1">
+					<startTime>800</startTime>
+					<endTime>850</endTime>
+				</trip>
+				<trip id="6" itinerary="2">
+					<startTime>853</startTime>
+					<endTime>877</endTime>
+				</trip>
+				<trip id="7" itinerary="3">
+					<startTime>881</startTime>
+					<endTime>904</endTime>
+				</trip>
+				<trip id="8" itinerary="4">
+					<startTime>905</startTime>
+					<endTime>935</endTime>
+				</trip>
+			</events>
+		</block>
+		<block id="6">
+			<events>
+				<trip id="1" itinerary="1">
+					<startTime>740</startTime>
+					<endTime>770</endTime>
+				</trip>
+				<trip id="2" itinerary="2">
+					<startTime>780</startTime>
+					<endTime>820</endTime>
+				</trip>
+				<trip id="3" itinerary="1">
+					<startTime>830</startTime>
+					<endTime>865</endTime>
+				</trip>
+				<trip id="4" itinerary="2">
+					<startTime>865</startTime>
+					<endTime>880</endTime>
+				</trip>
+				<trip id="5" itinerary="1">
+					<startTime>900</startTime>
+					<endTime>950</endTime>
+				</trip>
+				<trip id="6" itinerary="2">
+					<startTime>953</startTime>
+					<endTime>977</endTime>
+				</trip>
+				<trip id="7" itinerary="3">
+					<startTime>981</startTime>
+					<endTime>1004</endTime>
+				</trip>
+				<trip id="8" itinerary="4">
+					<startTime>1005</startTime>
+					<endTime>1035</endTime>
 				</trip>
 			</events>
 		</block>

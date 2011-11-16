@@ -6,18 +6,27 @@ public class Trip extends Base
 {
 	private static final long serialVersionUID = -3223398869529811151L;
 
+	private final Long blockId;
+
 	private final Itinerary itinerary;
 
 	private final Short startTime;
 
 	private final Short endTime;
 
-	public Trip(Long id, Itinerary itinerary, Short startTime, Short endTime)
+	public Trip(final Long id, final Long blockId, final Itinerary itinerary,
+			final Short startTime, final Short endTime)
 	{
 		super(id, EKind.TRIP);
+		this.blockId = blockId;
 		this.itinerary = itinerary;
 		this.startTime = startTime;
 		this.endTime = endTime;
+	}
+
+	public Long getBlockId()
+	{
+		return this.blockId;
 	}
 
 	public Itinerary getItinerary()
@@ -38,9 +47,18 @@ public class Trip extends Base
 	@Override
 	public String toString()
 	{
-		return this.itinerary.toString() + " - "
-				+ TimeUtil.convertTimeToString(this.startTime) + "/"
-				+ TimeUtil.convertTimeToString(this.endTime);
+		return this.itinerary.toString() + " - " + getFormattedStartTime()
+				+ "/" + getFormattedEndTime();
+	}
+
+	public String getFormattedEndTime()
+	{
+		return TimeUtil.convertTimeToString(this.endTime);
+	}
+
+	public String getFormattedStartTime()
+	{
+		return TimeUtil.convertTimeToString(this.startTime);
 	}
 
 	@Override

@@ -36,8 +36,10 @@ public class WplexONAndroidActivity extends TabActivity
 		// Create an Intent to launch an Activity for the tab (to be reused)
 		intent = new Intent().setClass(this, GraphActivity.class);
 		// Initialize a TabSpec for each tab and add it to the TabHost
-		spec = tabHost.newTabSpec("graph")
-				.setIndicator("Graph", res.getDrawable(R.drawable.tab_graph))
+		spec = tabHost
+				.newTabSpec("graph")
+				.setIndicator(getString(R.string.graph),
+						res.getDrawable(R.drawable.tab_graph))
 				.setContent(intent);
 		tabHost.addTab(spec);
 
@@ -47,8 +49,10 @@ public class WplexONAndroidActivity extends TabActivity
 		bundle.putSerializable("blocksModel", this.blocksModel);
 		intent.putExtras(bundle);
 
-		spec = tabHost.newTabSpec("table")
-				.setIndicator("Table", res.getDrawable(R.drawable.tab_table))
+		spec = tabHost
+				.newTabSpec("table")
+				.setIndicator(getString(R.string.table),
+						res.getDrawable(R.drawable.tab_table))
 				.setContent(intent);
 		tabHost.addTab(spec);
 
