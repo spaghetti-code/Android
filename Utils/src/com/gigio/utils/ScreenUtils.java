@@ -12,9 +12,7 @@ public class ScreenUtils
 	 */
 	public static boolean isPortrait(final Context context)
 	{
-		final DisplayMetrics displayMetrics = context.getResources()
-				.getDisplayMetrics();
-		return displayMetrics.heightPixels > displayMetrics.widthPixels;
+		return getScreenHeight(context) > getScreenWidth(context);
 	}
 
 	/**
@@ -23,9 +21,7 @@ public class ScreenUtils
 	 */
 	public static boolean isLandscape(final Context context)
 	{
-		final DisplayMetrics displayMetrics = context.getResources()
-				.getDisplayMetrics();
-		return displayMetrics.heightPixels < displayMetrics.widthPixels;
+		return getScreenHeight(context) < getScreenWidth(context);
 	}
 
 	/**
@@ -40,5 +36,23 @@ public class ScreenUtils
 				.getDisplayMetrics();
 		return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dipValue,
 				displayMetrics);
+	}
+
+	/**
+	 * @param context
+	 * @return Largura da tela
+	 */
+	public static int getScreenWidth(final Context context)
+	{
+		return context.getResources().getDisplayMetrics().widthPixels;
+	}
+
+	/**
+	 * @param context
+	 * @return Altura da tela
+	 */
+	public static int getScreenHeight(final Context context)
+	{
+		return context.getResources().getDisplayMetrics().heightPixels;
 	}
 }
