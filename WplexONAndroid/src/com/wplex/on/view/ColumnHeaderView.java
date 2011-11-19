@@ -7,21 +7,18 @@ import android.widget.TableRow.LayoutParams;
 import android.widget.TextView;
 
 import com.wplex.on.activity.TableActivity;
+import com.wplex.on.model.EBlockTableColumns;
 
 public class ColumnHeaderView extends TextView
 {
-	private final int column;
-
-	private final int defaultId;
+	private final EBlockTableColumns column;
 
 	public ColumnHeaderView(final TableActivity activity,
-			final LayoutParams params, final int column, final int defaultId,
-			final int upId, final int downId)
+			final LayoutParams params, final EBlockTableColumns column)
 	{
 		super(activity);
 		this.column = column;
-		this.defaultId = defaultId;
-		setText(activity.getString(defaultId));
+		setText(activity.getString(column.getDefaultId()));
 		setLayoutParams(params);
 		setTypeface(Typeface.SERIF, Typeface.BOLD);
 		setTextSize(TypedValue.COMPLEX_UNIT_DIP, 16);
@@ -32,8 +29,8 @@ public class ColumnHeaderView extends TextView
 			{
 				activity.setOrderByColumn(column);
 				activity.setAscending(!activity.isAscending());
-				setText(activity.isAscending() ? activity.getString(upId)
-						: activity.getString(downId));
+				setText(activity.isAscending() ? activity.getString(column
+						.getUpId()) : activity.getString(column.getDownId()));
 				activity.resetHeadersText();
 				activity.loadTable();
 			}
@@ -41,14 +38,9 @@ public class ColumnHeaderView extends TextView
 		activity.registerForContextMenu(this);
 	}
 
-	public int getColumn()
+	public EBlockTableColumns getColumn()
 	{
 		return this.column;
-	}
-
-	public int getDefaultId()
-	{
-		return this.defaultId;
 	}
 
 }

@@ -17,12 +17,12 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TableRow.LayoutParams;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.gigio.utils.ScreenUtils;
 import com.wplex.on.R;
 import com.wplex.on.model.BlockTableRowData;
 import com.wplex.on.model.BlocksModel;
+import com.wplex.on.model.EBlockTableColumns;
 import com.wplex.on.view.ColumnHeaderView;
 
 /**
@@ -46,9 +46,11 @@ public class TableActivity extends Activity
 {
 	private BlocksModel blocksModel;
 
-	private int orderByColumn = BlockTableRowData.BLOCK_ID_COLUMN;
+	private EBlockTableColumns orderByColumn = EBlockTableColumns.BLOCK;
 
 	private boolean ascending = true;
+
+	private EBlockTableColumns filterByColumn;
 
 	private final List<ColumnHeaderView> headers = new ArrayList<ColumnHeaderView>(
 			6);
@@ -79,23 +81,17 @@ public class TableActivity extends Activity
 		final LayoutParams params = new LayoutParams(w, h);
 
 		this.headers.add(new ColumnHeaderView(this, params,
-				BlockTableRowData.BLOCK_ID_COLUMN, R.string.block,
-				R.string.block_up, R.string.block_down));
+				EBlockTableColumns.BLOCK));
 		this.headers.add(new ColumnHeaderView(this, params,
-				BlockTableRowData.LINE_COLUMN, R.string.line, R.string.line_up,
-				R.string.line_down));
+				EBlockTableColumns.LINE));
 		this.headers.add(new ColumnHeaderView(this, params,
-				BlockTableRowData.KIND_COLUMN, R.string.kind, R.string.kind_up,
-				R.string.kind_down));
+				EBlockTableColumns.KIND));
 		this.headers.add(new ColumnHeaderView(this, params,
-				BlockTableRowData.DIRECTION_COLUMN, R.string.direction,
-				R.string.direction_up, R.string.direction_down));
+				EBlockTableColumns.DIRECTION));
 		this.headers.add(new ColumnHeaderView(this, params,
-				BlockTableRowData.START_TIME_COLUMN, R.string.start,
-				R.string.start_up, R.string.start_down));
+				EBlockTableColumns.START_TIME));
 		this.headers.add(new ColumnHeaderView(this, params,
-				BlockTableRowData.END_TIME_COLUMN, R.string.end,
-				R.string.end_up, R.string.end_down));
+				EBlockTableColumns.END_TIME));
 
 		final TableRow row = (TableRow) findViewById(R.id.headerRow);
 		for (final ColumnHeaderView header : this.headers)
@@ -106,7 +102,7 @@ public class TableActivity extends Activity
 	{
 		for (final ColumnHeaderView header : this.headers)
 			if (this.orderByColumn != header.getColumn())
-				header.setText(getString(header.getDefaultId()));
+				header.setText(getString(header.getColumn().getDefaultId()));
 	}
 
 	public void loadTable()
@@ -171,9 +167,16 @@ public class TableActivity extends Activity
 		super.onCreateContextMenu(menu, v, menuInfo);
 		if (v instanceof ColumnHeaderView)
 		{
-			final int id = ((ColumnHeaderView) v).getDefaultId();
+			final EBlockTableColumns column = ((ColumnHeaderView) v)
+					.getColumn();
+			final int id = column.getDefaultId();
 			menu.setHeaderTitle(getString(id));
-			menu.add(0, id, 0, getString(R.string.filter));
+			if (!column.equals(EBlockTableColumns.START_TIME)
+					&& !column.equals(EBlockTableColumns.END_TIME))
+			{
+				menu.add(0, id, 0, getString(R.string.filter));
+				this.filterByColumn = column;
+			}
 		}
 	}
 
@@ -181,8 +184,22 @@ public class TableActivity extends Activity
 	public boolean onContextItemSelected(MenuItem item)
 	{
 		if (item.getTitle().equals(getString(R.string.filter)))
-			showDialog(DIALOG_FILTER);
+		{
+			if (this.filterByColumn != null)
+				showDialog(DIALOG_FILTER);
+		}
 		return true;
+	}
+
+	@Override
+	protected void onPrepareDialog(int id, Dialog dialog)
+	{
+		super.onPrepareDialog(id, dialog);
+		switch (id)
+		{
+			case DIALOG_FILTER:
+				removeDialog(id); // para evitar que o sistema pegue sempre o dialog anterior já pronto...
+		}
 	}
 
 	@Override
@@ -194,19 +211,17 @@ public class TableActivity extends Activity
 			case DIALOG_FILTER:
 				final AlertDialog.Builder builder = new AlertDialog.Builder(
 						this);
-				// TODO implementar filtros
-				builder.setTitle("Filtro Bloco");
-				final String[] items = new String[] { "Todos", "1", "2", "3",
-						"4", "5", "6", "7", "8" };
-				builder.setItems(items, new DialogInterface.OnClickListener()
-				{
-					@Override
-					public void onClick(DialogInterface dialog, int item)
-					{
-						Toast.makeText(getApplicationContext(), items[item],
-								Toast.LENGTH_SHORT).show();
-					}
-				});
+				builder.setTitle(getString(this.filterByColumn.getDefaultId()));
+				builder.setItems(this.blocksModel.getFilterItems(
+						getString(R.string.all), this.filterByColumn),
+						new DialogInterface.OnClickListener()
+						{
+							@Override
+							public void onClick(DialogInterface dialog, int item)
+							{
+								// TODO implementar filtro
+							}
+						});
 				dialog = builder.create();
 				break;
 			default:
@@ -215,7 +230,7 @@ public class TableActivity extends Activity
 		return dialog;
 	}
 
-	public void setOrderByColumn(int orderByColumn)
+	public void setOrderByColumn(EBlockTableColumns orderByColumn)
 	{
 		this.orderByColumn = orderByColumn;
 	}

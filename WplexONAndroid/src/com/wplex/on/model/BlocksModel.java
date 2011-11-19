@@ -186,29 +186,29 @@ public class BlocksModel implements Serializable
 	}
 
 	public List<BlockTableRowData> getBlockTableRowData(
-			final int orderByColumn, final boolean ascending)
+			final EBlockTableColumns orderByColumn, final boolean ascending)
 	{
 		final List<Trip> trips = new ArrayList<Trip>();
 		for (final Block block : this.blocks)
 			trips.addAll(block.getTrips());
 		switch (orderByColumn)
 		{
-			case BlockTableRowData.BLOCK_ID_COLUMN:
+			case BLOCK:
 				Collections.sort(trips, new TripBlockIdComparator());
 				break;
-			case BlockTableRowData.LINE_COLUMN:
+			case LINE:
 				Collections.sort(trips, new TripLineComparator());
 				break;
-			case BlockTableRowData.KIND_COLUMN:
+			case KIND:
 				Collections.sort(trips, new TripKindComparator());
 				break;
-			case BlockTableRowData.DIRECTION_COLUMN:
+			case DIRECTION:
 				Collections.sort(trips, new TripDirectionComparator());
 				break;
-			case BlockTableRowData.START_TIME_COLUMN:
+			case START_TIME:
 				Collections.sort(trips, new TripStartTimeComparator());
 				break;
-			case BlockTableRowData.END_TIME_COLUMN:
+			case END_TIME:
 				Collections.sort(trips, new TripEndTimeComparator());
 				break;
 			default:
@@ -218,13 +218,53 @@ public class BlocksModel implements Serializable
 		this.blockTableRowData.clear();
 		if (!ascending)
 			Collections.reverse(trips);
+		final BlockTableFiltersMap filtersMap = BlockTableFiltersMap
+				.getInstance();
 		for (final Trip trip : trips)
-			this.blockTableRowData.add(new BlockTableRowData(String
-					.valueOf(trip.getBlockId()), trip.getItinerary().getLine(),
-					trip.getItinerary().getItineraryKind(), trip.getItinerary()
-							.getDirection(), trip.getFormattedStartTime(), trip
-							.getFormattedEndTime()));
+		{
+			if (filtersMap.passAllFilters(trip))
+				this.blockTableRowData.add(new BlockTableRowData(String
+						.valueOf(trip.getBlockId()), trip.getItinerary()
+						.getLine(), trip.getItinerary().getItineraryKind(),
+						trip.getItinerary().getDirection(), trip
+								.getFormattedStartTime(), trip
+								.getFormattedEndTime()));
+		}
 		return this.blockTableRowData;
+	}
+
+	public String[] getFilterItems(final String allString,
+			final EBlockTableColumns column)
+	{
+		final List<String> items = new ArrayList<String>();
+
+		switch (column)
+		{
+			case BLOCK:
+				for (final Block block : this.blocks)
+					items.add(String.valueOf(block.getId()));
+				break;
+			case LINE:
+				for (final Itinerary itinerary : this.itineraries)
+					if (!items.contains(itinerary.getLine()))
+						items.add(itinerary.getLine());
+				break;
+			case KIND:
+				for (final Itinerary itinerary : this.itineraries)
+					if (!items.contains(itinerary.getItineraryKind()))
+						items.add(itinerary.getItineraryKind());
+				break;
+			case DIRECTION:
+				for (final Itinerary itinerary : this.itineraries)
+					if (!items.contains(itinerary.getDirection()))
+						items.add(itinerary.getDirection());
+				break;
+		}
+		Collections.sort(items);
+		items.add(0, allString);
+
+		final String[] result = new String[items.size()];
+		return items.toArray(result);
 	}
 
 	private Itinerary getItinerary(final Long id)
