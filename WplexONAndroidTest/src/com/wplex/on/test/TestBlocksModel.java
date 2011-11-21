@@ -64,13 +64,13 @@ public class TestBlocksModel extends InstrumentationTestCase
 		// testa filtros
 		final BlockTableFiltersMap filtersMap = BlockTableFiltersMap
 				.getInstance();
-		filtersMap.setFilter(EBlockTableColumns.BLOCK, Long.valueOf(1));
+		filtersMap.setFilter(EBlockTableColumns.BLOCK, "1");
 
 		List<BlockTableRowData> blockTableRowData = blocksModel
 				.getBlockTableRowData(EBlockTableColumns.BLOCK, true);
 		assertTrue(blockTableRowData.isEmpty());
 
-		filtersMap.setFilter(EBlockTableColumns.BLOCK, Long.valueOf(0));
+		filtersMap.setFilter(EBlockTableColumns.BLOCK, "0");
 		blockTableRowData = blocksModel.getBlockTableRowData(
 				EBlockTableColumns.BLOCK, true);
 		assertEquals(2, blockTableRowData.size());
