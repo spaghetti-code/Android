@@ -25,8 +25,11 @@ public class WplexONAndroidActivity extends TabActivity
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		setContentView(R.layout.main);
 
-		this.blocksModel = new BlocksModel(getResources().getXml(
-				R.xml.itineraries), getResources().getXml(R.xml.blocks));
+		if (getLastNonConfigurationInstance() != null)
+			this.blocksModel = (BlocksModel) getLastNonConfigurationInstance();
+		else
+			this.blocksModel = new BlocksModel(getResources().getXml(
+					R.xml.itineraries), getResources().getXml(R.xml.blocks));
 
 		final Resources res = getResources(); // Resource object to get Drawables
 		final TabHost tabHost = getTabHost(); // The activity TabHost
@@ -58,4 +61,13 @@ public class WplexONAndroidActivity extends TabActivity
 
 		tabHost.setCurrentTab(1);
 	}
+
+	@Override
+	public Object onRetainNonConfigurationInstance()
+	{
+		if (this.blocksModel != null)
+			return this.blocksModel;
+		return super.onRetainNonConfigurationInstance();
+	}
+
 }

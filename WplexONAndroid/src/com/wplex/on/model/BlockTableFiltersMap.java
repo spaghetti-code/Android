@@ -5,7 +5,7 @@ import java.util.Map;
 
 public class BlockTableFiltersMap
 {
-	private final Map<EBlockTableColumns, Object> filters = new HashMap<EBlockTableColumns, Object>(
+	private final Map<EBlockTableColumns, String> filters = new HashMap<EBlockTableColumns, String>(
 			4);
 
 	private static BlockTableFiltersMap instance;
@@ -40,8 +40,8 @@ public class BlockTableFiltersMap
 	public boolean passFilterBlock(final Trip trip)
 	{
 		return getFilter(EBlockTableColumns.BLOCK) == null
-				|| getFilter(EBlockTableColumns.BLOCK)
-						.equals(trip.getBlockId());
+				|| getFilter(EBlockTableColumns.BLOCK).equals(
+						String.valueOf(trip.getBlockId()));
 	}
 
 	public boolean passFilterLine(final Trip trip)
@@ -65,12 +65,12 @@ public class BlockTableFiltersMap
 						trip.getItinerary().getDirection());
 	}
 
-	public void setFilter(final EBlockTableColumns column, final Object value)
+	public void setFilter(final EBlockTableColumns column, final String value)
 	{
 		this.filters.put(column, value);
 	}
 
-	public Object getFilter(final EBlockTableColumns column)
+	public String getFilter(final EBlockTableColumns column)
 	{
 		return this.filters.get(column);
 	}

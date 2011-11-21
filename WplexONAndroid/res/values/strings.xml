@@ -24,4 +24,7 @@
     <string name="table">Tabela</string>
     <string name="filter">Filtro</string>
     <string name="all">Todos</string>
+    <string name="confirmation_exit">Tem certeza que quer sair? Todos os dados não salvos serão perdidos.</string>
+    <string name="yes">Sim</string>
+    <string name="no">Não</string>
 </resources>

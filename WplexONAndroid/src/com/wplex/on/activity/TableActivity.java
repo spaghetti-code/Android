@@ -20,6 +20,7 @@ import android.widget.TextView;
 
 import com.gigio.utils.ScreenUtils;
 import com.wplex.on.R;
+import com.wplex.on.model.BlockTableFiltersMap;
 import com.wplex.on.model.BlockTableRowData;
 import com.wplex.on.model.BlocksModel;
 import com.wplex.on.model.EBlockTableColumns;
@@ -28,9 +29,7 @@ import com.wplex.on.view.ColumnHeaderView;
 /**
  * TODO LIST
  * - ajeitar ícone
- * - filtros da tabela: bloco, linha, tipo, sentido (cumulativos!)
  * - opção para esconder/visualizar coluna
- * - gestir o ciclo de vida: ex, preservar a ordenação dos dados ao mudar orientamento da tela
  * - menu contextual para cada linha da tabela (long press), com várias opções: marcar/desmarcar viagem,
  *   eliminar viagem, modificar tempos
  * - dialog para mudar os tempos de viagem, com validação
@@ -57,6 +56,8 @@ public class TableActivity extends Activity
 
 	private static final int DIALOG_FILTER = 0;
 
+	private static final int DIALOG_CONFIRM_EXIT = 1;
+
 	/**
 	 * @see android.app.Activity#onCreate(android.os.Bundle)
 	 */
@@ -69,8 +70,23 @@ public class TableActivity extends Activity
 		this.blocksModel = (BlocksModel) getIntent().getExtras()
 				.getSerializable("blocksModel");
 
+		if (savedInstanceState != null)
+		{
+			this.orderByColumn = (EBlockTableColumns) savedInstanceState
+					.getSerializable("orderByColumn");
+			this.ascending = savedInstanceState.getBoolean("ascending");
+		}
+
 		loadHeaders();
 		loadTable();
+	}
+
+	@Override
+	protected void onSaveInstanceState(Bundle outState)
+	{
+		super.onSaveInstanceState(outState);
+		outState.putSerializable("orderByColumn", this.orderByColumn);
+		outState.putBoolean("ascending", this.ascending);
 	}
 
 	private void loadHeaders()
@@ -212,22 +228,65 @@ public class TableActivity extends Activity
 				final AlertDialog.Builder builder = new AlertDialog.Builder(
 						this);
 				builder.setTitle(getString(this.filterByColumn.getDefaultId()));
-				builder.setItems(this.blocksModel.getFilterItems(
-						getString(R.string.all), this.filterByColumn),
+				final String[] filterItems = this.blocksModel.getFilterItems(
+						getString(R.string.all), this.filterByColumn);
+				builder.setItems(filterItems,
 						new DialogInterface.OnClickListener()
 						{
 							@Override
 							public void onClick(DialogInterface dialog, int item)
 							{
-								// TODO implementar filtro
+								String value = null;
+								if (item > 0)
+									value = filterItems[item];
+								BlockTableFiltersMap.getInstance().setFilter(
+										TableActivity.this.filterByColumn,
+										value);
+								TableActivity.this.loadTable();
 							}
 						});
 				dialog = builder.create();
 				break;
-			default:
-				dialog = null;
+			case DIALOG_CONFIRM_EXIT:
+				final AlertDialog.Builder builder2 = new AlertDialog.Builder(
+						this);
+				builder2.setMessage(getString(R.string.confirmation_exit))
+						.setCancelable(false)
+						.setPositiveButton(getString(R.string.yes),
+								new DialogInterface.OnClickListener()
+								{
+									@Override
+									public void onClick(DialogInterface dialog,
+											int id)
+									{
+										TableActivity.this.finish();
+									}
+								})
+						.setNegativeButton(getString(R.string.no),
+								new DialogInterface.OnClickListener()
+								{
+									@Override
+									public void onClick(DialogInterface dialog,
+											int id)
+									{
+										dialog.cancel();
+									}
+								});
+				dialog = builder2.create();
+				break;
 		}
 		return dialog;
+	}
+
+	@Override
+	public void onBackPressed()
+	{
+		showDialog(DIALOG_CONFIRM_EXIT);
+	}
+
+	public EBlockTableColumns getOrderByColumn()
+	{
+		return this.orderByColumn;
 	}
 
 	public void setOrderByColumn(EBlockTableColumns orderByColumn)

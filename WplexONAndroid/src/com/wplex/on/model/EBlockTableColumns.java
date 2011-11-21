@@ -1,8 +1,10 @@
 package com.wplex.on.model;
 
+import java.io.Serializable;
+
 import com.wplex.on.R;
 
-public enum EBlockTableColumns
+public enum EBlockTableColumns implements Serializable
 {
 	BLOCK(R.string.block, R.string.block_up, R.string.block_down), LINE(
 			R.string.line, R.string.line_up, R.string.line_down), KIND(

@@ -18,7 +18,11 @@ public class ColumnHeaderView extends TextView
 	{
 		super(activity);
 		this.column = column;
-		setText(activity.getString(column.getDefaultId()));
+		if (activity.getOrderByColumn().equals(column))
+			setText(activity.isAscending() ? activity.getString(column
+					.getUpId()) : activity.getString(column.getDownId()));
+		else
+			setText(column.getDefaultId());
 		setLayoutParams(params);
 		setTypeface(Typeface.SERIF, Typeface.BOLD);
 		setTextSize(TypedValue.COMPLEX_UNIT_DIP, 16);
