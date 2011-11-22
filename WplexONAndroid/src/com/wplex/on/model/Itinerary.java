@@ -10,13 +10,17 @@ public class Itinerary extends Base
 
 	private final String direction;
 
+	private final float[] color;
+
 	public Itinerary(final Long id, final String line, final String kind,
-			final String direction)
+			final String direction, final float red, final float green,
+			final float blue)
 	{
 		super(id, EKind.ITINERARY);
 		this.line = line;
 		this.itineraryKind = kind;
 		this.direction = direction;
+		this.color = new float[] { red, green, blue };
 	}
 
 	public String getLine()
@@ -32,6 +36,11 @@ public class Itinerary extends Base
 	public String getDirection()
 	{
 		return this.direction;
+	}
+
+	public float[] getColor()
+	{
+		return this.color;
 	}
 
 	@Override

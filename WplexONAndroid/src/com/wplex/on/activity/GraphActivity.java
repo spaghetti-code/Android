@@ -2,10 +2,15 @@ package com.wplex.on.activity;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.widget.TextView;
+
+import com.wplex.on.model.BlocksModel;
+import com.wplex.on.view.GraphView;
 
 public class GraphActivity extends Activity
 {
+	private BlocksModel blocksModel;
+	private GraphView view;
+
 	/**
 	 * @see android.app.Activity#onCreate(android.os.Bundle)
 	 */
@@ -14,8 +19,10 @@ public class GraphActivity extends Activity
 	{
 		super.onCreate(savedInstanceState);
 
-		final TextView textview = new TextView(this);
-		textview.setText("This is the Graph tab"); //$NON-NLS-1$
-		setContentView(textview);
+		this.blocksModel = (BlocksModel) getIntent().getExtras()
+				.getSerializable("blocksModel");
+		this.view = new GraphView(this, this.blocksModel);
+
+		setContentView(this.view);
 	}
 }

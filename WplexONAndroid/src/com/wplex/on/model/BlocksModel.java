@@ -41,6 +41,9 @@ public class BlocksModel implements Serializable
 		String line = null;
 		String kind = null;
 		String direction = null;
+		float red = 1.0f;
+		float green = 1.0f;
+		float blue = 1.0f;
 		boolean parseLine = false;
 		boolean parseKind = false;
 		boolean parseDirection = false;
@@ -54,9 +57,16 @@ public class BlocksModel implements Serializable
 				{
 					name = itineraryParser.getName();
 					if (name.equals("itinerary"))
+					{
 						id = Long.valueOf(itineraryParser.getAttributeIntValue(
 								null, "id", 0));
-					else if (name.equals("line"))
+						red = itineraryParser.getAttributeFloatValue(null,
+								"red", 1.0f);
+						green = itineraryParser.getAttributeFloatValue(null,
+								"green", 1.0f);
+						blue = itineraryParser.getAttributeFloatValue(null,
+								"blue", 1.0f);
+					} else if (name.equals("line"))
 						parseLine = true;
 					else if (name.equals("kind"))
 						parseKind = true;
@@ -68,7 +78,7 @@ public class BlocksModel implements Serializable
 					if (name.equals("itinerary"))
 					{
 						this.itineraries.add(new Itinerary(id, line, kind,
-								direction));
+								direction, red, green, blue));
 						id = null;
 						line = null;
 						kind = null;
