@@ -6,13 +6,13 @@ import android.os.Bundle;
 public class TileGameActivity extends Activity
 {
 
-	private TileGameView view;
+	//private TileGameView view;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		this.view = new TileGameView(this);
-		setContentView(this.view);
+		//this.view = new TileGameView(this);
+		setContentView(R.layout.main);
 	}
 }

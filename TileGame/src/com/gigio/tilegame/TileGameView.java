@@ -4,14 +4,15 @@ import javax.microedition.khronos.opengles.GL;
 
 import android.content.Context;
 import android.opengl.GLSurfaceView;
+import android.util.AttributeSet;
 
 import com.gigio.utils.MatrixTrackingGL;
 
 public class TileGameView extends GLSurfaceView
 {
-	private final TileGameRenderer renderer;
+	private TileGameRenderer renderer;
 
-	private final TileGameListener listener;
+	private TileGameListener listener;
 
 	public TileGameView(Context context)
 	{
@@ -34,6 +35,11 @@ public class TileGameView extends GLSurfaceView
 				return new MatrixTrackingGL(gl);
 			}
 		});
+	}
+
+	public TileGameView(Context context, AttributeSet attrs)
+	{
+		this(context);
 	}
 
 }

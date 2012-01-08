@@ -11,8 +11,8 @@ import com.gigio.utils.TextureUtils;
 
 public class Tile
 {
-	private float centerX;
-	private float centerY;
+	private final float centerX;
+	private final float centerY;
 
 	private final static float HALF_SIDE = 0.1f;
 
@@ -35,11 +35,16 @@ public class Tile
 			1.0f, 0.0f // D. right-top
 	};
 
-	private final static int FRONT_TEXTURE = R.drawable.front;
-	private final static int BACK_TEXTURE = R.drawable.back;
+	private final int frontTexture;
+	private final int backTexture;
 
-	public Tile(Context context)
+	public Tile(Context context, final int frontTexture, final int backTexture,
+			final float centerX, final float centerY)
 	{
+		this.frontTexture = frontTexture;
+		this.backTexture = backTexture;
+		this.centerX = centerX;
+		this.centerY = centerY;
 		this.vertexBuffer = GeometryUtils.initVertexBuffer(this.vertices);
 		this.texBuffer = TextureUtils.initTextureBuffer(this.texCoords);
 	}
@@ -67,17 +72,7 @@ public class Tile
 	public void loadTexture(GL10 gl, Context context)
 	{
 		this.textureIDs = TextureUtils.loadTextures(gl, context, new int[] {
-				FRONT_TEXTURE, BACK_TEXTURE });
-	}
-
-	public void setCenterX(float centerX)
-	{
-		this.centerX = centerX;
-	}
-
-	public void setCenterY(float centerY)
-	{
-		this.centerY = centerY;
+				this.frontTexture, this.backTexture });
 	}
 
 	public float getCenterX()
