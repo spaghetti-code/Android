@@ -58,4 +58,43 @@ public class BasicGLRenderer implements GLSurfaceView.Renderer
 		gl.glDisable(GL10.GL_DITHER);
 	}
 
+	/**
+	 * @param gl
+	 * @return Coordenada X OpenGL correspondente à extremidade esquerda da tela
+	 */
+	protected float getMinX(GL10 gl)
+	{
+		return (GeometryUtils.convertScreenCoordsToWorldCoords(gl, 0, 0,
+				this.w, this.h))[0];
+	}
+
+	/**
+	 * @param gl
+	 * @return Coordenada X OpenGL correspondente à extremidade direita da tela
+	 */
+	protected float getMaxX(GL10 gl)
+	{
+		return (GeometryUtils.convertScreenCoordsToWorldCoords(gl, this.w, 0,
+				this.w, this.h))[0];
+	}
+
+	/**
+	 * @param gl
+	 * @return Coordenada Y OpenGL correspondente à extremidade inferior da tela
+	 */
+	protected float getMinY(GL10 gl)
+	{
+		return (GeometryUtils.convertScreenCoordsToWorldCoords(gl, 0, 0,
+				this.w, this.h))[1];
+	}
+
+	/**
+	 * @param gl
+	 * @return Coordenada Y OpenGL correspondente à extremidade superior da tela
+	 */
+	protected float getMaxY(GL10 gl)
+	{
+		return (GeometryUtils.convertScreenCoordsToWorldCoords(gl, 0, this.h,
+				this.w, this.h))[1];
+	}
 }
