@@ -1,15 +1,28 @@
-package com.gigio.tilegame;
+package com.gigio.tilegame.graph;
 
 import java.nio.FloatBuffer;
 
 import javax.microedition.khronos.opengles.GL10;
 
+import com.gigio.tilegame.view.TileGameRenderer;
 import com.gigio.utils.GeometryUtils;
 
+/**
+ * Simple horizontal line.
+ * 
+ * @author Francesco Bertolino
+ */
 public class HorizontalLine
 {
 	private FloatBuffer vertexBuffer;
 
+	/**
+	 * @param gl
+	 * @param renderer
+	 * @param y
+	 * @param minX
+	 * @param maxX
+	 */
 	public void draw(final GL10 gl, final TileGameRenderer renderer,
 			final float y, final float minX, final float maxX)
 	{
@@ -24,6 +37,13 @@ public class HorizontalLine
 		gl.glDisableClientState(GL10.GL_VERTEX_ARRAY);
 	}
 
+	/**
+	 * @param gl
+	 * @param renderer
+	 * @param y
+	 * @param minX
+	 * @param maxX
+	 */
 	private void initVertexBuffer(final GL10 gl,
 			final TileGameRenderer renderer, final float y, final float minX,
 			final float maxX)

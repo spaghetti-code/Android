@@ -4,17 +4,43 @@
     android:layout_height="fill_parent"
     android:orientation="vertical" >
 
-    <com.gigio.tilegame.TileGameView
+    <com.gigio.tilegame.view.TileGameView
         android:id="@+id/tileGameView1"
         android:layout_width="fill_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.70" />
+        android:layout_weight="0.60" />
 
-    <Button
-        android:id="@+id/button1"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_weight="0.30"
-        android:text="Button" />
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="0dp"
+    android:layout_weight="0.40"
+    android:orientation="vertical" >
+    
+	    <TextView
+	        android:id="@+id/textView1"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_gravity="center_horizontal"
+	        android:text="@string/title"
+	        android:textAppearance="?android:attr/textAppearanceLarge"
+	        android:textStyle="bold" />
+	
+	    <TextView
+	        android:id="@+id/textView2"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_gravity="center_horizontal"
+	        android:gravity="center_vertical|center_horizontal"
+	        android:text="@string/instructions"
+	        android:textAppearance="?android:attr/textAppearanceMedium" />
+	
+	    <Button
+	        android:id="@+id/Button01"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_gravity="center_horizontal"
+	        android:text="@string/start" />
 
+    </LinearLayout>
+    
 </LinearLayout>

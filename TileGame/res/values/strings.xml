@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="hello">Hello World, TileGameActivity!</string>
     <string name="app_name">TileGame</string>
+    <string name="title">Tiles &amp; Numbers</string>
+    <string name="instructions">Select the numbers in the right sequence, as quickly as possible!</string>
+    <string name="start">Start</string>
+    <string name="tries">Tries:</string>
+    <string name="time">Time:</string>
+    <string name="record">Record:</string>
 
 </resources>

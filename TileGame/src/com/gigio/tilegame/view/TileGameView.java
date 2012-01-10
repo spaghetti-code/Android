@@ -1,4 +1,4 @@
-package com.gigio.tilegame;
+package com.gigio.tilegame.view;
 
 import javax.microedition.khronos.opengles.GL;
 
@@ -8,25 +8,41 @@ import android.util.AttributeSet;
 
 import com.gigio.utils.MatrixTrackingGL;
 
+/**
+ * Tile game OpenGL view.
+ * 
+ * @author Francesco Bertolino
+ */
 public class TileGameView extends GLSurfaceView
 {
+	/**
+	 * OpenGL renderer
+	 */
 	private TileGameRenderer renderer;
 
+	/**
+	 * Touch listener
+	 */
 	private TileGameListener listener;
 
-	public TileGameView(Context context)
+	/**
+	 * @param context
+	 */
+	public TileGameView(final Context context)
 	{
 		super(context);
 
+		// creates and sets OpenGL renderer
 		this.renderer = new TileGameRenderer(context);
 		setRenderer(this.renderer);
 
+		// creates and sets touch listener
 		this.requestFocus();
 		this.setFocusableInTouchMode(true);
 		this.listener = new TileGameListener(this.renderer);
 		this.setOnTouchListener(this.listener);
 
-		// para permitir a conversão de coordenadas tela/mundo
+		// to allow screen coords/OpenGL coords conversion
 		setGLWrapper(new GLSurfaceView.GLWrapper()
 		{
 			@Override
@@ -37,6 +53,12 @@ public class TileGameView extends GLSurfaceView
 		});
 	}
 
+	/**
+	 * Layout XML needs this constructor.
+	 * 
+	 * @param context
+	 * @param attrs
+	 */
 	public TileGameView(Context context, AttributeSet attrs)
 	{
 		this(context);

@@ -4,17 +4,118 @@
     android:layout_height="fill_parent"
     android:orientation="horizontal" >
 
-    <com.gigio.tilegame.TileGameView
+    <com.gigio.tilegame.view.TileGameView
         android:id="@+id/tileGameView1"
         android:layout_width="0dp"
         android:layout_height="fill_parent"
-        android:layout_weight="0.70" />
+        android:layout_weight="0.60" />
 
-    <Button
-        android:id="@+id/button1"
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="0.30"
-        android:text="Button" />
+        android:layout_height="fill_parent"
+        android:layout_weight="0.40"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/lblTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:padding="10dp"
+            android:text="@string/title"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/lblInstructions"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center_vertical|center_horizontal"
+            android:padding="10dp"
+            android:text="@string/instructions"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <Button
+            android:id="@+id/btnStart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/start" />
+
+        <LinearLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:layout_gravity="center"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:id="@+id/lblTries"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/tries" />
+
+            <TextView
+                android:id="@+id/lblTriesValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:text="0" />
+
+            <TextView
+                android:id="@+id/lblTriesRecord"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="30dp"
+                android:paddingRight="10dp"
+                android:text="@string/record" />
+
+            <TextView
+                android:id="@+id/lblTriesRecordValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:text="0" />
+        </LinearLayout>
+
+        <LinearLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:layout_gravity="center"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:id="@+id/lblTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/time" />
+
+            <TextView
+                android:id="@+id/lblTimeValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:text="00:00" />
+
+            <TextView
+                android:id="@+id/lblTimeRecord"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="15dp"
+                android:text="@string/record" />
+
+            <TextView
+                android:id="@+id/lblTimeRecordValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:text="00:00" />
+        </LinearLayout>
+    </LinearLayout>
 
 </LinearLayout>
