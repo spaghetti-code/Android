@@ -48,9 +48,9 @@
             xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="10dp"
             android:layout_gravity="center"
-            android:orientation="horizontal" >
+            android:orientation="horizontal"
+            android:padding="10dp" >
 
             <TextView
                 android:id="@+id/lblTries"
@@ -85,9 +85,9 @@
             xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="10dp"
             android:layout_gravity="center"
-            android:orientation="horizontal" >
+            android:orientation="horizontal"
+            android:padding="10dp" >
 
             <TextView
                 android:id="@+id/lblTime"
@@ -115,6 +115,27 @@
                 android:layout_height="wrap_content"
                 android:padding="10dp"
                 android:text="00:00" />
+        </LinearLayout>
+
+        <LinearLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="horizontal"
+            android:padding="10dp" >
+            
+            <TextView
+            android:id="@+id/lblWin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:padding="10dp"
+            android:text=""
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textStyle="bold"
+            android:textColor="#00FF00" />
+            
         </LinearLayout>
     </LinearLayout>
 

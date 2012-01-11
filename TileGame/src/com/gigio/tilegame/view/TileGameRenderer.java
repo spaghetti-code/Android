@@ -10,7 +10,7 @@ import android.content.Context;
 import com.gigio.tilegame.R;
 import com.gigio.tilegame.game.GameHelper;
 import com.gigio.tilegame.graph.HorizontalLine;
-import com.gigio.tilegame.graph.Tile;
+import com.gigio.tilegame.graph.Tile3D;
 import com.gigio.tilegame.graph.VerticalLine;
 import com.gigio.utils.BasicGLRenderer;
 import com.gigio.utils.GeometryUtils;
@@ -26,12 +26,12 @@ public class TileGameRenderer extends BasicGLRenderer
 	/**
 	 * Tiles collection
 	 */
-	private Tile[] tiles;
+	private Tile3D[] tiles;
 
 	/**
 	 * Rotation agle for each tile
 	 */
-	private final float[] angle;
+	private float[] angle;
 
 	/**
 	 * Rotation speed used when showing a number
@@ -51,12 +51,12 @@ public class TileGameRenderer extends BasicGLRenderer
 	/**
 	 * For each tile, tells the renderer if it's rotating front to back (showing number)
 	 */
-	private final boolean[] rotateFrontToBack;
+	private boolean[] rotateFrontToBack;
 
 	/**
 	 * For each tile, tells the renderer if it's rotating back to front (hiding number)
 	 */
-	private final boolean[] rotateBackToFront;
+	private boolean[] rotateBackToFront;
 
 	/**
 	 * Screen coordinate X, when the screen is touched
@@ -74,9 +74,9 @@ public class TileGameRenderer extends BasicGLRenderer
 	private int hit = -1;
 
 	/**
-	 * True if textures have already been loaded
+	 * True if game has to be reset
 	 */
-	private boolean texturesLoaded = false;
+	private boolean resetGame = false;
 
 	/**
 	 * @param context
@@ -84,12 +84,7 @@ public class TileGameRenderer extends BasicGLRenderer
 	public TileGameRenderer(Context context)
 	{
 		super(context);
-		this.angle = new float[] { 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
-				0.0f, 0.0f };
-		this.rotateBackToFront = new boolean[] { false, false, false, false,
-				false, false, false, false, false };
-		this.rotateFrontToBack = new boolean[] { false, false, false, false,
-				false, false, false, false, false };
+		resetGame();
 	}
 
 	@Override
@@ -97,14 +92,6 @@ public class TileGameRenderer extends BasicGLRenderer
 	{
 		super.onSurfaceChanged(gl, width, height);
 		initTiles(gl);
-
-		if (!this.texturesLoaded)
-		{
-			gl.glEnable(GL10.GL_TEXTURE_2D);
-			for (final Tile tile : this.tiles)
-				tile.loadTexture(gl, this.context);
-			this.texturesLoaded = true;
-		}
 	}
 
 	@Override
@@ -117,43 +104,52 @@ public class TileGameRenderer extends BasicGLRenderer
 		// draws border
 		drawBorder(gl);
 
-		Tile tile;
-		for (int i = 0; i < this.tiles.length; i++)
+		if (this.resetGame)
 		{
-			tile = this.tiles[i];
-
-			// draws tile front
-			gl.glLoadIdentity();
-			gl.glTranslatef(tile.getCenterX(), tile.getCenterY(), -1.0f);
-			gl.glRotatef(this.angle[i], 0.0f, 1.0f, 0.0f);
-			tile.draw(gl, true);
-
-			// draws tile back
-			gl.glLoadIdentity();
-			gl.glTranslatef(tile.getCenterX(), tile.getCenterY(), -1.0f);
-			gl.glRotatef(this.angle[i] + 180, 0.0f, 1.0f, 0.0f);
-			tile.draw(gl, false);
+			initTiles(gl);
+			this.resetGame = false;
 		}
 
-		gl.glLoadIdentity();
-		// manages touch
-		if (this.touchX != -1.0f)
+		if (GameHelper.getInstance().isGameStarted())
 		{
-			// if a tile has been touched, starts its rotation
-			this.hit = hitTile(gl);
-			if (this.hit != -1)
-				startTileRotation(this.hit);
-			this.touchX = -1.0f;
-			this.touchY = -1.0f;
-		}
-		// checks sequence after every rotation
-		// FIXME just needed once each time
-		else if (!tilesRotating())
-			if (!GameHelper.getInstance().assertSequence())
-				hideNumbers();
+			Tile3D tile;
+			for (int i = 0; i < this.tiles.length; i++)
+			{
+				tile = this.tiles[i];
 
-		// updates variables used for tiles rotation
-		updateRotationVars();
+				// draws tile front
+				gl.glLoadIdentity();
+				gl.glTranslatef(tile.getCenterX(), tile.getCenterY(), -1.0f);
+				gl.glRotatef(this.angle[i], 0.0f, 1.0f, 0.0f);
+				tile.draw(gl);
+
+				//				// draws tile back
+				//				gl.glLoadIdentity();
+				//				gl.glTranslatef(tile.getCenterX(), tile.getCenterY(), -1.0f);
+				//				gl.glRotatef(this.angle[i] + 180, 0.0f, 1.0f, 0.0f);
+				//				tile.draw(gl, false);
+			}
+
+			gl.glLoadIdentity();
+			// manages touch
+			if (this.touchX != -1.0f)
+			{
+				// if a tile has been touched, starts its rotation
+				this.hit = hitTile(gl);
+				if (this.hit != -1)
+					startTileRotation(this.hit);
+				this.touchX = -1.0f;
+				this.touchY = -1.0f;
+			}
+			// checks sequence after every rotation
+			// FIXME just needed once each time
+			else if (!tilesRotating())
+				if (!GameHelper.getInstance().assertSequence())
+					hideNumbers();
+
+			// updates variables used for tiles rotation
+			updateRotationVars();
+		}
 	}
 
 	/**
@@ -166,7 +162,7 @@ public class TileGameRenderer extends BasicGLRenderer
 	 */
 	private void initTiles(GL10 gl)
 	{
-		this.tiles = new Tile[9];
+		this.tiles = new Tile3D[9];
 
 		// gets tiles size based on OpenGL viewport size
 		final float openGLWidth = getMaxX(gl) - getMinX(gl);
@@ -191,10 +187,15 @@ public class TileGameRenderer extends BasicGLRenderer
 
 		// creates tiles
 		for (int i = 0; i < 9; i++)
-			this.tiles[i] = new Tile(this.context, values.get(i),
+			this.tiles[i] = new Tile3D(this.context, values.get(i),
 					R.drawable.front, GameHelper.getInstance()
 							.getNumberTextureResource(values.get(i)),
 					centerX[i], centerY[i], halfSide);
+
+		// loads textures
+		gl.glEnable(GL10.GL_TEXTURE_2D);
+		for (final Tile3D tile : this.tiles)
+			tile.loadTexture(gl, this.context);
 	}
 
 	/**
@@ -204,6 +205,7 @@ public class TileGameRenderer extends BasicGLRenderer
 	 */
 	private void drawBorder(final GL10 gl)
 	{
+		gl.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 		new HorizontalLine().draw(gl, this, getMinY(gl), getMinX(gl) + 0.01f,
 				getMaxX(gl));
 		new HorizontalLine().draw(gl, this, getMaxY(gl) - 0.01f,
@@ -231,7 +233,7 @@ public class TileGameRenderer extends BasicGLRenderer
 			final float worldY = -coords[1] / Math.abs(coords[2]);
 
 			// asserts if a tile has been touched
-			Tile tile;
+			Tile3D tile;
 			for (int i = 0; i < this.tiles.length; i++)
 			{
 				tile = this.tiles[i];
@@ -347,5 +349,19 @@ public class TileGameRenderer extends BasicGLRenderer
 	{
 		this.touchX = x;
 		this.touchY = y;
+	}
+
+	/**
+	 * @param resetGame
+	 */
+	public void resetGame()
+	{
+		this.resetGame = true;
+		this.angle = new float[] { 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
+				0.0f, 0.0f };
+		this.rotateBackToFront = new boolean[] { false, false, false, false,
+				false, false, false, false, false };
+		this.rotateFrontToBack = new boolean[] { false, false, false, false,
+				false, false, false, false, false };
 	}
 }

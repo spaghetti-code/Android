@@ -3,7 +3,11 @@ package com.gigio.tilegame.game;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.os.Handler;
+import android.os.Message;
+
 import com.gigio.tilegame.R;
+import com.gigio.tilegame.view.TileGameActivity;
 
 /**
  * Tile game helper class.
@@ -21,6 +25,31 @@ public class GameHelper
 	 * Sequence of chosen numbers
 	 */
 	private final List<Integer> sequence;
+
+	/**
+	 * True if a new game has been started
+	 */
+	private boolean gameStarted = false;
+
+	/**
+	 * True if the game has been won
+	 */
+	private boolean gameWon = false;
+
+	/**
+	 * Game activity
+	 */
+	private TileGameActivity activity;
+
+	/**
+	 * Constant: game started
+	 */
+	public static final int GAME_STARTED = 0;
+
+	/**
+	 * Constant: game won
+	 */
+	public static final int GAME_WON = 1;
 
 	/**
 	 * Default constructor
@@ -45,11 +74,12 @@ public class GameHelper
 	 */
 	public boolean assertSequence()
 	{
-		final boolean result = true;
 		for (int i = 0; i < this.sequence.size(); i++)
 			if (!this.sequence.get(i).equals(Integer.valueOf(i + 1)))
 				return false;
-		return result;
+		if (this.sequence.size() == 9)
+			setGameWon(true);
+		return true;
 	}
 
 	/**
@@ -122,5 +152,74 @@ public class GameHelper
 		if (!alreadySelected.contains(Integer.valueOf(value)))
 			return value;
 		return getRandomValue(alreadySelected);
+	}
+
+	/**
+	 * Used to handle view components update, because a Handler runs
+	 * on the UI thread and thus avoids the error:
+	 * "Only the original thread that created a view hierarchy can touch its views."
+	 */
+	private final Handler handler = new Handler()
+	{
+		@Override
+		public void handleMessage(Message msg)
+		{
+			switch (msg.what)
+			{
+				case GAME_STARTED:
+					GameHelper.this.activity.updateViewsOnGameStarted();
+					break;
+				case GAME_WON:
+					GameHelper.this.activity.updateViewsOnGameWon();
+					break;
+			}
+		}
+	};
+
+	/**
+	 * @return gameStarted
+	 */
+	public boolean isGameStarted()
+	{
+		return this.gameStarted;
+	}
+
+	/**
+	 * @param gameStarted
+	 */
+	public void setGameStarted(boolean gameStarted)
+	{
+		this.gameStarted = gameStarted;
+		if (gameStarted)
+		{
+			clearSequence();
+			this.handler.sendEmptyMessage(GAME_STARTED);
+		}
+	}
+
+	/**
+	 * @return gameWon
+	 */
+	public boolean isGameWon()
+	{
+		return this.gameWon;
+	}
+
+	/**
+	 * @param gameWon
+	 */
+	public void setGameWon(boolean gameWon)
+	{
+		this.gameWon = gameWon;
+		if (gameWon)
+			this.handler.sendEmptyMessage(GAME_WON);
+	}
+
+	/**
+	 * @param activity
+	 */
+	public void setActivity(TileGameActivity activity)
+	{
+		this.activity = activity;
 	}
 }

@@ -31,6 +31,17 @@ public class TileGameView extends GLSurfaceView
 	public TileGameView(final Context context)
 	{
 		super(context);
+	}
+
+	/**
+	 * Layout XML needs this constructor.
+	 * 
+	 * @param context
+	 * @param attrs
+	 */
+	public TileGameView(Context context, AttributeSet attrs)
+	{
+		super(context, attrs);
 
 		// creates and sets OpenGL renderer
 		this.renderer = new TileGameRenderer(context);
@@ -54,14 +65,10 @@ public class TileGameView extends GLSurfaceView
 	}
 
 	/**
-	 * Layout XML needs this constructor.
-	 * 
-	 * @param context
-	 * @param attrs
+	 * @return renderer
 	 */
-	public TileGameView(Context context, AttributeSet attrs)
+	public TileGameRenderer getRenderer()
 	{
-		this(context);
+		return this.renderer;
 	}
-
 }

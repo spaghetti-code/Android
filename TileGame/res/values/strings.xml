@@ -2,11 +2,13 @@
 <resources>
 
     <string name="app_name">TileGame</string>
-    <string name="title">Tiles &amp; Numbers</string>
+    <string name="title">Number Memory!</string>
     <string name="instructions">Select the numbers in the right sequence, as quickly as possible!</string>
     <string name="start">Start</string>
     <string name="tries">Tries:</string>
     <string name="time">Time:</string>
     <string name="record">Record:</string>
+    <string name="win">You Win!</string>
+    <string name="game_started">Game Started</string>
 
 </resources>
