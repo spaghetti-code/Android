@@ -1,4 +1,4 @@
-package com.gigio.tilegame.view;
+package com.gigio.tilegame.view.game;
 
 import javax.microedition.khronos.opengles.GL;
 

@@ -1,4 +1,4 @@
-package com.gigio.tilegame.view;
+package com.gigio.tilegame.view.game;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -102,7 +102,7 @@ public class TileGameRenderer extends BasicGLRenderer
 		// translates out of the screen to show objects
 		gl.glTranslatef(0.0f, 0.0f, -1.0f);
 		// draws border
-		drawBorder(gl);
+		// drawBorder(gl);
 
 		if (this.resetGame)
 		{

@@ -4,7 +4,7 @@ import java.nio.FloatBuffer;
 
 import javax.microedition.khronos.opengles.GL10;
 
-import com.gigio.tilegame.view.TileGameRenderer;
+import com.gigio.tilegame.view.game.TileGameRenderer;
 import com.gigio.utils.GeometryUtils;
 
 /**

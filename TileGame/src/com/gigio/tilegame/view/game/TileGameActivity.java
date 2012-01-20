@@ -1,13 +1,10 @@
-package com.gigio.tilegame.view;
+package com.gigio.tilegame.view.game;
 
 import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.gigio.tilegame.R;
@@ -20,6 +17,10 @@ import com.gigio.tilegame.game.GameHelper;
  */
 public class TileGameActivity extends Activity
 {
+	private TileGameView view;
+
+	private TextView lblWin;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
@@ -27,20 +28,13 @@ public class TileGameActivity extends Activity
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
-		setContentView(R.layout.main);
+		setContentView(R.layout.game);
+
+		this.view = (TileGameView) findViewById(R.id.tileGameView1);
+		this.lblWin = (TextView) this.findViewById(R.id.lblWin);
 
 		GameHelper.getInstance().setActivity(this);
-
-		// when the start button is clicked, a new game starts
-		final Button btnStart = (Button) findViewById(R.id.btnStart);
-		btnStart.setOnClickListener(new OnClickListener()
-		{
-			@Override
-			public void onClick(final View v)
-			{
-				GameHelper.getInstance().setGameStarted(true);
-			}
-		});
+		GameHelper.getInstance().setGameStarted(true);
 
 		//new Thread(this).start();
 	}
@@ -76,12 +70,10 @@ public class TileGameActivity extends Activity
 	 */
 	public void updateViewsOnGameStarted()
 	{
-		final TextView lblWin = (TextView) this.findViewById(R.id.lblWin);
-		lblWin.setText(R.string.game_started);
-		lblWin.setTextColor(Color.LTGRAY);
+		this.lblWin.setText(R.string.game_started);
+		this.lblWin.setTextColor(Color.LTGRAY);
 
-		final TileGameView gameView = (TileGameView) findViewById(R.id.tileGameView1);
-		gameView.getRenderer().resetGame();
+		this.view.getRenderer().resetGame();
 	}
 
 	/**
@@ -89,8 +81,23 @@ public class TileGameActivity extends Activity
 	 */
 	public void updateViewsOnGameWon()
 	{
-		final TextView lblWin = (TextView) this.findViewById(R.id.lblWin);
-		lblWin.setText(R.string.win);
-		lblWin.setTextColor(Color.GREEN);
+		this.lblWin.setText(R.string.win);
+		this.lblWin.setTextColor(Color.GREEN);
+	}
+
+	// Call back when the activity is going into the background
+	@Override
+	protected void onPause()
+	{
+		super.onPause();
+		this.view.onPause();
+	}
+
+	// Call back after onPause()
+	@Override
+	protected void onResume()
+	{
+		super.onResume();
+		this.view.onResume();
 	}
 }

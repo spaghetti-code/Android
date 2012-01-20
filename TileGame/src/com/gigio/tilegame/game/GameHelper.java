@@ -7,7 +7,7 @@ import android.os.Handler;
 import android.os.Message;
 
 import com.gigio.tilegame.R;
-import com.gigio.tilegame.view.TileGameActivity;
+import com.gigio.tilegame.view.game.TileGameActivity;
 
 /**
  * Tile game helper class.

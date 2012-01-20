@@ -1,31 +1,23 @@
-package com.gigio.tilegame.view;
+package com.gigio.tilegame.view.intro;
 
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
 
-/**
- * Touch listener for tile game.
- * 
- * @author Francesco Bertolino
- */
-public class TileGameListener implements OnTouchListener
+public class IntroListener implements OnTouchListener
 {
-	/**
-	 * Game renderer
-	 */
-	private final TileGameRenderer renderer;
+	private final IntroRenderer renderer;
 
 	/**
 	 * @param renderer
 	 */
-	public TileGameListener(final TileGameRenderer renderer)
+	public IntroListener(final IntroRenderer renderer)
 	{
 		this.renderer = renderer;
 	}
 
 	@Override
-	public boolean onTouch(View view, MotionEvent event)
+	public boolean onTouch(View v, MotionEvent event)
 	{
 		final float x = event.getX();
 		final float y = event.getY();
