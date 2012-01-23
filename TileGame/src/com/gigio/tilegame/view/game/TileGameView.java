@@ -71,4 +71,20 @@ public class TileGameView extends GLSurfaceView
 	{
 		return this.renderer;
 	}
+
+	/**
+	 * Called to start a new game.
+	 */
+	void resetGame()
+	{
+		this.renderer.resetGame();
+	}
+
+	/**
+	 * Called to continue a paused game.
+	 */
+	void continueGame()
+	{
+		this.renderer.setContinueGame(true);
+	}
 }

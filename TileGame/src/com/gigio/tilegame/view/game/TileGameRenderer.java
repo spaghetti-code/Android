@@ -9,9 +9,7 @@ import android.content.Context;
 
 import com.gigio.tilegame.R;
 import com.gigio.tilegame.game.GameHelper;
-import com.gigio.tilegame.graph.HorizontalLine;
 import com.gigio.tilegame.graph.Tile3D;
-import com.gigio.tilegame.graph.VerticalLine;
 import com.gigio.utils.BasicGLRenderer;
 import com.gigio.utils.GeometryUtils;
 import com.gigio.utils.ScreenUtils;
@@ -79,12 +77,17 @@ public class TileGameRenderer extends BasicGLRenderer
 	private boolean resetGame = false;
 
 	/**
+	 * True if game has to be continued
+	 */
+	private boolean continueGame = false;
+
+	/**
 	 * @param context
 	 */
 	public TileGameRenderer(Context context)
 	{
 		super(context);
-		resetGame();
+		//resetGame();
 	}
 
 	@Override
@@ -92,6 +95,7 @@ public class TileGameRenderer extends BasicGLRenderer
 	{
 		super.onSurfaceChanged(gl, width, height);
 		initTiles(gl);
+		continueGame();
 	}
 
 	@Override
@@ -180,10 +184,15 @@ public class TileGameRenderer extends BasicGLRenderer
 				-openGLHeight / 3.0f, -openGLHeight / 3.0f };
 
 		// generates random values
-		final List<Integer> values = new ArrayList<Integer>();
-		while (values.size() < 9)
-			values.add(Integer.valueOf(GameHelper.getInstance().getRandomValue(
-					values)));
+		List<Integer> values = new ArrayList<Integer>();
+		if (!this.continueGame)
+		{
+			while (values.size() < 9)
+				values.add(Integer.valueOf(GameHelper.getInstance()
+						.getRandomValue(values)));
+			GameHelper.getInstance().setTileNumbers(values);
+		} else
+			values = GameHelper.getInstance().getTileNumbers();
 
 		// creates tiles
 		for (int i = 0; i < 9; i++)
@@ -198,23 +207,23 @@ public class TileGameRenderer extends BasicGLRenderer
 			tile.loadTexture(gl, this.context);
 	}
 
-	/**
-	 * Draws OpenGL viewport border.
-	 * 
-	 * @param gl
-	 */
-	private void drawBorder(final GL10 gl)
-	{
-		gl.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-		new HorizontalLine().draw(gl, this, getMinY(gl), getMinX(gl) + 0.01f,
-				getMaxX(gl));
-		new HorizontalLine().draw(gl, this, getMaxY(gl) - 0.01f,
-				getMinX(gl) + 0.01f, getMaxX(gl));
-		new VerticalLine().draw(gl, this, getMinX(gl) + 0.01f, getMinY(gl),
-				getMaxY(gl) - 0.01f);
-		new VerticalLine().draw(gl, this, getMaxX(gl), getMinY(gl),
-				getMaxY(gl) - 0.01f);
-	}
+	//	/**
+	//	 * Draws OpenGL viewport border.
+	//	 * 
+	//	 * @param gl
+	//	 */
+	//	private void drawBorder(final GL10 gl)
+	//	{
+	//		gl.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+	//		new HorizontalLine().draw(gl, this, getMinY(gl), getMinX(gl) + 0.01f,
+	//				getMaxX(gl));
+	//		new HorizontalLine().draw(gl, this, getMaxY(gl) - 0.01f,
+	//				getMinX(gl) + 0.01f, getMaxX(gl));
+	//		new VerticalLine().draw(gl, this, getMinX(gl) + 0.01f, getMinY(gl),
+	//				getMaxY(gl) - 0.01f);
+	//		new VerticalLine().draw(gl, this, getMaxX(gl), getMinY(gl),
+	//				getMaxY(gl) - 0.01f);
+	//	}
 
 	/**
 	 * @param gl
@@ -352,11 +361,44 @@ public class TileGameRenderer extends BasicGLRenderer
 	}
 
 	/**
-	 * @param resetGame
+	 * Called when the game has to start new.
 	 */
 	public void resetGame()
 	{
 		this.resetGame = true;
+		resetRotationArrays();
+	}
+
+	/**
+	 * Called when the game has to continue after a pause.
+	 * (ex. when the screen changes orientation)
+	 */
+	public void continueGame()
+	{
+		resetRotationArrays();
+		final int sequenceSize = GameHelper.getInstance().getSequence().size();
+		for (int i = 0; i < 9; i++)
+			if (this.tiles[i].getValue() <= sequenceSize)
+			{
+				this.angle[i] = 180.0f;
+				this.tiles[i].setShowingNumber(true);
+			}
+		this.continueGame = false;
+	}
+
+	/**
+	 * @param continueGame
+	 */
+	public void setContinueGame(boolean continueGame)
+	{
+		this.continueGame = continueGame;
+	}
+
+	/**
+	 * Resets the arrays used during the tiles rotation.
+	 */
+	private void resetRotationArrays()
+	{
 		this.angle = new float[] { 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
 				0.0f, 0.0f };
 		this.rotateBackToFront = new boolean[] { false, false, false, false,

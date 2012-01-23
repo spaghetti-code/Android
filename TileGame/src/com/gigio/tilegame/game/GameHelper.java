@@ -27,6 +27,11 @@ public class GameHelper
 	private final List<Integer> sequence;
 
 	/**
+	 * Sequence of tile numbers
+	 */
+	private List<Integer> tileNumbers;
+
+	/**
 	 * True if a new game has been started
 	 */
 	private boolean gameStarted = false;
@@ -42,6 +47,11 @@ public class GameHelper
 	private TileGameActivity activity;
 
 	/**
+	 * Current number of tries
+	 */
+	private int tries = 1;
+
+	/**
 	 * Constant: game started
 	 */
 	public static final int GAME_STARTED = 0;
@@ -50,6 +60,11 @@ public class GameHelper
 	 * Constant: game won
 	 */
 	public static final int GAME_WON = 1;
+
+	/**
+	 * Constant: add try
+	 */
+	public static final int ADD_TRY = 2;
 
 	/**
 	 * Default constructor
@@ -76,7 +91,10 @@ public class GameHelper
 	{
 		for (int i = 0; i < this.sequence.size(); i++)
 			if (!this.sequence.get(i).equals(Integer.valueOf(i + 1)))
+			{
+				this.handler.sendEmptyMessage(ADD_TRY);
 				return false;
+			}
 		if (this.sequence.size() == 9)
 			setGameWon(true);
 		return true;
@@ -172,6 +190,11 @@ public class GameHelper
 				case GAME_WON:
 					GameHelper.this.activity.updateViewsOnGameWon();
 					break;
+				case ADD_TRY:
+					GameHelper.this.tries++;
+					GameHelper.this.activity
+							.updateTriesNumber(GameHelper.this.tries);
+					break;
 			}
 		}
 	};
@@ -193,7 +216,9 @@ public class GameHelper
 		if (gameStarted)
 		{
 			clearSequence();
+			this.tries = 1;
 			this.handler.sendEmptyMessage(GAME_STARTED);
+			startTimer();
 		}
 	}
 
@@ -212,7 +237,11 @@ public class GameHelper
 	{
 		this.gameWon = gameWon;
 		if (gameWon)
+		{
+			this.tries = 1;
 			this.handler.sendEmptyMessage(GAME_WON);
+			stopTimer(false);
+		}
 	}
 
 	/**
@@ -222,4 +251,102 @@ public class GameHelper
 	{
 		this.activity = activity;
 	}
+
+	/**
+	 * @return sequence
+	 */
+	public List<Integer> getSequence()
+	{
+		return this.sequence;
+	}
+
+	/**
+	 * @return tileNumbers
+	 */
+	public List<Integer> getTileNumbers()
+	{
+		return this.tileNumbers;
+	}
+
+	/**
+	 * @param tileNumbers
+	 */
+	public void setTileNumbers(List<Integer> tileNumbers)
+	{
+		this.tileNumbers = tileNumbers;
+	}
+
+	/////////////////////// TIMER
+
+	/**
+	 * Handler for the timer task (runs on main thread)
+	 */
+	private final Handler timerHandler = new Handler();
+
+	/**
+	 * Start time for counting
+	 */
+	private long startTime;
+
+	/**
+	 * Elapsed time
+	 */
+	private long elapsedTime;
+
+	/**
+	 * Time elapsed when the game is paused
+	 */
+	private long elapsedTimeAtPause;
+
+	/**
+	 * Starts the timer
+	 */
+	public void startTimer()
+	{
+		this.startTime = System.currentTimeMillis();
+		// removes any existing callbacks from the message queue, to be sure
+		this.timerHandler.removeCallbacks(this.timerTask);
+		// tells the handler to run the task once 100ms from now
+		this.timerHandler.postDelayed(this.timerTask, 100);
+	}
+
+	/**
+	 * Stops the timer
+	 * 
+	 * @param pause True if it's just a pause
+	 */
+	public void stopTimer(final boolean pause)
+	{
+		// removes any callbacks
+		this.timerHandler.removeCallbacks(this.timerTask);
+		if (pause)
+			this.elapsedTimeAtPause = this.elapsedTime;
+		else
+			this.elapsedTimeAtPause = 0;
+	}
+
+	/**
+	 * Timer task
+	 */
+	private final Runnable timerTask = new Runnable()
+	{
+		@Override
+		public void run()
+		{
+			final long now = System.currentTimeMillis();
+			GameHelper.this.elapsedTime = (now - GameHelper.this.startTime)
+					+ GameHelper.this.elapsedTimeAtPause;
+			int seconds = (int) (GameHelper.this.elapsedTime / 1000);
+			final int minutes = seconds / 60;
+			seconds = seconds % 60;
+
+			// adjusts to mm:ss format and updates interface
+			final String min = (minutes < 10 ? "0" + minutes : "" + minutes);
+			final String sec = (seconds < 10 ? "0" + seconds : "" + seconds);
+			GameHelper.this.activity.updateTimer(min + ":" + sec);
+
+			// sets next callback on the message queue, 100ms from now
+			GameHelper.this.timerHandler.postDelayed(this, 100);
+		}
+	};
 }
