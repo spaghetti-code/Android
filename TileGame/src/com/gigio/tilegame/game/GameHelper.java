@@ -8,6 +8,7 @@ import android.os.Message;
 
 import com.gigio.tilegame.R;
 import com.gigio.tilegame.view.game.TileGameActivity;
+import com.gigio.tilegame.view.options.Difficulty;
 
 /**
  * Tile game helper class.
@@ -52,6 +53,16 @@ public class GameHelper
 	private int tries = 1;
 
 	/**
+	 * Game difficulty level:
+	 * - beginner = 4
+	 * - easy = 6
+	 * - normal = 9
+	 * - expert = 12
+	 * - master = 16 
+	 */
+	private Difficulty difficulty = Difficulty.NORMAL;
+
+	/**
 	 * Constant: game started
 	 */
 	public static final int GAME_STARTED = 0;
@@ -71,7 +82,7 @@ public class GameHelper
 	 */
 	private GameHelper()
 	{
-		this.sequence = new ArrayList<Integer>(9);
+		this.sequence = new ArrayList<Integer>();
 	}
 
 	/**
@@ -95,7 +106,7 @@ public class GameHelper
 				this.handler.sendEmptyMessage(ADD_TRY);
 				return false;
 			}
-		if (this.sequence.size() == 9)
+		if (this.sequence.size() == this.difficulty.getTiles())
 			setGameWon(true);
 		return true;
 	}
@@ -124,48 +135,247 @@ public class GameHelper
 	 */
 	public int getNumberTextureResource(final int value)
 	{
-		int resource = R.drawable.zero;
+		int resource = R.drawable.t1;
 		switch (value)
 		{
 			case 1:
-				resource = R.drawable.one;
+				resource = R.drawable.t1;
 				break;
 			case 2:
-				resource = R.drawable.two;
+				resource = R.drawable.t2;
 				break;
 			case 3:
-				resource = R.drawable.three;
+				resource = R.drawable.t3;
 				break;
 			case 4:
-				resource = R.drawable.four;
+				resource = R.drawable.t4;
 				break;
 			case 5:
-				resource = R.drawable.five;
+				resource = R.drawable.t5;
 				break;
 			case 6:
-				resource = R.drawable.six;
+				resource = R.drawable.t6;
 				break;
 			case 7:
-				resource = R.drawable.seven;
+				resource = R.drawable.t7;
 				break;
 			case 8:
-				resource = R.drawable.eight;
+				resource = R.drawable.t8;
 				break;
 			case 9:
-				resource = R.drawable.nine;
+				resource = R.drawable.t9;
+				break;
+			case 10:
+				resource = R.drawable.t10;
+				break;
+			case 11:
+				resource = R.drawable.t11;
+				break;
+			case 12:
+				resource = R.drawable.t12;
+				break;
+			case 13:
+				resource = R.drawable.t13;
+				break;
+			case 14:
+				resource = R.drawable.t14;
+				break;
+			case 15:
+				resource = R.drawable.t15;
+				break;
+			case 16:
+				resource = R.drawable.t16;
 				break;
 		}
 		return resource;
 	}
 
 	/**
+	 * @param value
+	 * @return Back resource corresponding to informed numeric value
+	 */
+	public int getBackTextureResource(final int value)
+	{
+		int resource = R.drawable.back_neutra;
+		if (this.difficulty.equals(Difficulty.BEGINNER))
+		{
+			switch (value)
+			{
+				case 1:
+					resource = R.drawable.back_1;
+					break;
+				case 2:
+					resource = R.drawable.back_3;
+					break;
+				case 3:
+					resource = R.drawable.back_7;
+					break;
+				case 4:
+					resource = R.drawable.back_9;
+					break;
+			}
+		} else if (this.difficulty.equals(Difficulty.EASY))
+		{
+			switch (value)
+			{
+				case 1:
+					resource = R.drawable.back_1;
+					break;
+				case 2:
+					resource = R.drawable.back_2;
+					break;
+				case 3:
+					resource = R.drawable.back_3;
+					break;
+				case 4:
+					resource = R.drawable.back_7;
+					break;
+				case 5:
+					resource = R.drawable.back_8;
+					break;
+				case 6:
+					resource = R.drawable.back_9;
+					break;
+			}
+		} else if (this.difficulty.equals(Difficulty.NORMAL))
+		{
+			switch (value)
+			{
+				case 1:
+					resource = R.drawable.back_1;
+					break;
+				case 2:
+					resource = R.drawable.back_2;
+					break;
+				case 3:
+					resource = R.drawable.back_3;
+					break;
+				case 4:
+					resource = R.drawable.back_4;
+					break;
+				case 5:
+					resource = R.drawable.back_5;
+					break;
+				case 6:
+					resource = R.drawable.back_6;
+					break;
+				case 7:
+					resource = R.drawable.back_7;
+					break;
+				case 8:
+					resource = R.drawable.back_8;
+					break;
+				case 9:
+					resource = R.drawable.back_9;
+					break;
+			}
+		} else if (this.difficulty.equals(Difficulty.EXPERT))
+		{
+			switch (value)
+			{
+				case 1:
+					resource = R.drawable.back_neutra;
+					break;
+				case 2:
+					resource = R.drawable.back_neutra;
+					break;
+				case 3:
+					resource = R.drawable.back_neutra;
+					break;
+				case 4:
+					resource = R.drawable.back_1;
+					break;
+				case 5:
+					resource = R.drawable.back_2;
+					break;
+				case 6:
+					resource = R.drawable.back_3;
+					break;
+				case 7:
+					resource = R.drawable.back_7;
+					break;
+				case 8:
+					resource = R.drawable.back_8;
+					break;
+				case 9:
+					resource = R.drawable.back_9;
+					break;
+				case 10:
+					resource = R.drawable.back_neutra;
+					break;
+				case 11:
+					resource = R.drawable.back_neutra;
+					break;
+				case 12:
+					resource = R.drawable.back_neutra;
+					break;
+			}
+		} else if (this.difficulty.equals(Difficulty.MASTER))
+		{
+			switch (value)
+			{
+				case 1:
+					resource = R.drawable.back_neutra;
+					break;
+				case 2:
+					resource = R.drawable.back_neutra;
+					break;
+				case 3:
+					resource = R.drawable.back_neutra;
+					break;
+				case 4:
+					resource = R.drawable.back_neutra;
+					break;
+				case 5:
+					resource = R.drawable.back_neutra;
+					break;
+				case 6:
+					resource = R.drawable.back_1;
+					break;
+				case 7:
+					resource = R.drawable.back_3;
+					break;
+				case 8:
+					resource = R.drawable.back_neutra;
+					break;
+				case 9:
+					resource = R.drawable.back_neutra;
+					break;
+				case 10:
+					resource = R.drawable.back_7;
+					break;
+				case 11:
+					resource = R.drawable.back_9;
+					break;
+				case 12:
+					resource = R.drawable.back_neutra;
+					break;
+				case 13:
+					resource = R.drawable.back_neutra;
+					break;
+				case 14:
+					resource = R.drawable.back_neutra;
+					break;
+				case 15:
+					resource = R.drawable.back_neutra;
+					break;
+				case 16:
+					resource = R.drawable.back_neutra;
+					break;
+			}
+		}
+
+		return resource;
+	}
+
+	/**
 	 * @param alreadySelected List of already selected numeric values
-	 * @return Random numeric value between 1 and 9
+	 * @return Random numeric value between 1 and max
 	 */
 	public int getRandomValue(final List<Integer> alreadySelected)
 	{
 		final int min = 1;
-		final int max = 9;
+		final int max = this.difficulty.getTiles();
 		final int value = min + (int) (Math.random() * ((max - min) + 1));
 		if (!alreadySelected.contains(Integer.valueOf(value)))
 			return value;
@@ -258,6 +468,22 @@ public class GameHelper
 	public List<Integer> getSequence()
 	{
 		return this.sequence;
+	}
+
+	/**
+	 * @return difficulty
+	 */
+	public Difficulty getDifficulty()
+	{
+		return this.difficulty;
+	}
+
+	/**
+	 * @param difficulty
+	 */
+	public void setDifficulty(Difficulty difficulty)
+	{
+		this.difficulty = difficulty;
 	}
 
 	/**

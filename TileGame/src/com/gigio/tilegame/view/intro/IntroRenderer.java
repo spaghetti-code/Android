@@ -53,7 +53,7 @@ public class IntroRenderer extends BasicGLRenderer
 		if (this.touchX != -1.0f)
 			checkTouch(gl);
 
-		gl.glTranslatef(0.0f, 0.0f, -6.0f);
+		gl.glTranslatef(0.0f, 0.0f, -4.5f);
 		gl.glRotatef(this.angleX, 1.0f, 0.0f, 0.0f);
 		gl.glRotatef(this.angleY, 0.0f, 1.0f, 0.0f);
 		this.cube.draw(gl);

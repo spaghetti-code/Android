@@ -19,6 +19,7 @@
             android:label="@string/app_name"
             android:name=".view.game.TileGameActivity" >
         </activity>
+        <activity android:name=".view.options.OptionsActivity"></activity>
         
     </application>
 

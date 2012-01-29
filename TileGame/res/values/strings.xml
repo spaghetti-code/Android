@@ -11,5 +11,13 @@
     <string name="win">You Win!</string>
     <string name="game_started">Game Started</string>
     <string name="intro">Tap the cube to start playing!</string>
+    <string name="help">Test your memory!\n\nTouch \"Start\" or the rotating cube to begin a new game.\nTurn the tiles to show up numbers and put them in the right sequence\n\nTouch \"Options\" to adjust game difficulty: number of tiles on screen, time race, limited tries...\n\nTouch \"Records\" to check your best performances.</string>
+    <string name="otpions">Options</string>
+    <string name="difficulty">Difficulty:</string>
+    <string name="beginner">Beginner (4 tiles)</string>
+    <string name="easy">Easy (6 tiles)</string>
+    <string name="normal">Normal (9 tiles)</string>
+    <string name="expert">Expert (12 tiles)</string>
+    <string name="master">Master (16 tiles)</string>
 
 </resources>

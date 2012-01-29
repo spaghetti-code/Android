@@ -49,6 +49,7 @@ public class Tile3D
 	 */
 	private final int frontTexture;
 	private final int backTexture;
+	private final int sideTexture;
 
 	/**
 	 * Numeric value
@@ -60,16 +61,26 @@ public class Tile3D
 	 */
 	private boolean showingNumber = false;
 
+	/**
+	 * Frame around tile
+	 */
 	private final Frame3D frame;
 
+	/**
+	 * Tile thickness.
+	 */
+	private final float tileThickness = 0.02f;
+
 	public Tile3D(final Context context, final int value,
-			final int frontTexture, final int backTexture, final float centerX,
-			final float centerY, final float halfSide)
+			final int frontTexture, final int backTexture,
+			final int sideTexture, final float centerX, final float centerY,
+			final float halfSide)
 	{
 		this.value = value;
 
 		this.frontTexture = frontTexture;
 		this.backTexture = backTexture;
+		this.sideTexture = sideTexture;
 		this.centerX = centerX;
 		this.centerY = centerY;
 
@@ -81,35 +92,35 @@ public class Tile3D
 				-halfSide, halfSide, 0.0f,//
 				halfSide, halfSide, 0.0f,//
 				// back
-				halfSide, -halfSide, -0.02f,//
-				-halfSide, -halfSide, -0.02f,//
-				halfSide, halfSide, -0.02f,//
-				-halfSide, halfSide, -0.02f,//
+				halfSide, -halfSide, -this.tileThickness,//
+				-halfSide, -halfSide, -this.tileThickness,//
+				halfSide, halfSide, -this.tileThickness,//
+				-halfSide, halfSide, -this.tileThickness,//
 				// left
-				-halfSide, -halfSide, -0.02f,//
+				-halfSide, -halfSide, -this.tileThickness,//
 				-halfSide, -halfSide, 0.0f,//
-				-halfSide, halfSide, -0.02f,//
+				-halfSide, halfSide, -this.tileThickness,//
 				-halfSide, halfSide, 0.0f,//
 				// right
 				halfSide, -halfSide, 0.0f,//
-				halfSide, -halfSide, -0.02f,//
+				halfSide, -halfSide, -this.tileThickness,//
 				halfSide, halfSide, 0.0f,//
-				halfSide, halfSide, -0.02f,//
+				halfSide, halfSide, -this.tileThickness,//
 				// top
 				-halfSide, halfSide, 0.0f,//
 				halfSide, halfSide, 0.0f,//
-				-halfSide, halfSide, -0.02f,//
-				halfSide, halfSide, -0.02f,//
+				-halfSide, halfSide, -this.tileThickness,//
+				halfSide, halfSide, -this.tileThickness,//
 				// bottom
 				halfSide, -halfSide, 0.0f,//
 				-halfSide, -halfSide, 0.0f,//
-				halfSide, -halfSide, -0.02f,//
-				-halfSide, -halfSide, -0.02f,//
+				halfSide, -halfSide, -this.tileThickness,//
+				-halfSide, -halfSide, -this.tileThickness,//
 		};
 		this.vertexBuffer = GeometryUtils.initVertexBuffer(this.vertices);
 		this.texBuffer = TextureUtils.initTextureBuffer(this.textureCoords);
 
-		this.frame = new Frame3D(halfSide);
+		this.frame = new Frame3D(halfSide, this.tileThickness);
 	}
 
 	public void draw(GL10 gl)
@@ -138,7 +149,8 @@ public class Tile3D
 					gl.glBindTexture(GL10.GL_TEXTURE_2D, this.textureIDs[1]);
 					break;
 				default:
-					gl.glDisableClientState(GL10.GL_TEXTURE_COORD_ARRAY);
+					gl.glBindTexture(GL10.GL_TEXTURE_2D, this.textureIDs[2]);
+					break;
 			}
 			gl.glDrawArrays(GL10.GL_TRIANGLE_STRIP, face * 4, 4);
 		}
@@ -152,7 +164,7 @@ public class Tile3D
 	public void loadTexture(GL10 gl, Context context)
 	{
 		this.textureIDs = TextureUtils.loadTextures(gl, context, new int[] {
-				this.frontTexture, this.backTexture });
+				this.frontTexture, this.backTexture, this.sideTexture });
 	}
 
 	/**

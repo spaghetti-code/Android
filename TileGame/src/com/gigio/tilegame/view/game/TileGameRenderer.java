@@ -87,7 +87,6 @@ public class TileGameRenderer extends BasicGLRenderer
 	public TileGameRenderer(Context context)
 	{
 		super(context);
-		//resetGame();
 	}
 
 	@Override
@@ -103,10 +102,10 @@ public class TileGameRenderer extends BasicGLRenderer
 	{
 		super.onDrawFrame(gl);
 
+		gl.glClearColor(0.2f, 0.2f, 0.2f, 0.0f);
+
 		// translates out of the screen to show objects
 		gl.glTranslatef(0.0f, 0.0f, -1.0f);
-		// draws border
-		// drawBorder(gl);
 
 		if (this.resetGame)
 		{
@@ -121,17 +120,11 @@ public class TileGameRenderer extends BasicGLRenderer
 			{
 				tile = this.tiles[i];
 
-				// draws tile front
+				// draws tile
 				gl.glLoadIdentity();
 				gl.glTranslatef(tile.getCenterX(), tile.getCenterY(), -1.0f);
 				gl.glRotatef(this.angle[i], 0.0f, 1.0f, 0.0f);
 				tile.draw(gl);
-
-				//				// draws tile back
-				//				gl.glLoadIdentity();
-				//				gl.glTranslatef(tile.getCenterX(), tile.getCenterY(), -1.0f);
-				//				gl.glRotatef(this.angle[i] + 180, 0.0f, 1.0f, 0.0f);
-				//				tile.draw(gl, false);
 			}
 
 			gl.glLoadIdentity();
@@ -166,28 +159,25 @@ public class TileGameRenderer extends BasicGLRenderer
 	 */
 	private void initTiles(GL10 gl)
 	{
-		this.tiles = new Tile3D[9];
+		final int tilesNumber = GameHelper.getInstance().getDifficulty()
+				.getTiles();
+
+		this.tiles = new Tile3D[tilesNumber];
 
 		// gets tiles size based on OpenGL viewport size
 		final float openGLWidth = getMaxX(gl) - getMinX(gl);
 		final float openGLHeight = getMaxY(gl) - getMinY(gl);
-		final float halfSide = ScreenUtils.isPortrait(this.context) ? openGLWidth / 7.0f
-				: openGLWidth / 7.5f;
+		final float halfSide = getHalfSide(openGLWidth);
 
 		// gets tile position based on OpenGL viewport size
-		final float[] centerX = { -openGLWidth / 3.0f, 0.0f,
-				openGLWidth / 3.0f, -openGLWidth / 3.0f, 0.0f,
-				openGLWidth / 3.0f, -openGLWidth / 3.0f, 0.0f,
-				openGLWidth / 3.0f };
-		final float[] centerY = { openGLHeight / 3.0f, openGLHeight / 3.0f,
-				openGLHeight / 3.0f, 0.0f, 0.0f, 0.0f, -openGLHeight / 3.0f,
-				-openGLHeight / 3.0f, -openGLHeight / 3.0f };
+		final float[] centerX = getCenterX(openGLWidth);
+		final float[] centerY = getCenterY(openGLHeight);
 
 		// generates random values
 		List<Integer> values = new ArrayList<Integer>();
 		if (!this.continueGame)
 		{
-			while (values.size() < 9)
+			while (values.size() < tilesNumber)
 				values.add(Integer.valueOf(GameHelper.getInstance()
 						.getRandomValue(values)));
 			GameHelper.getInstance().setTileNumbers(values);
@@ -195,16 +185,138 @@ public class TileGameRenderer extends BasicGLRenderer
 			values = GameHelper.getInstance().getTileNumbers();
 
 		// creates tiles
-		for (int i = 0; i < 9; i++)
-			this.tiles[i] = new Tile3D(this.context, values.get(i),
-					R.drawable.front, GameHelper.getInstance()
-							.getNumberTextureResource(values.get(i)),
-					centerX[i], centerY[i], halfSide);
+		for (int i = 0; i < tilesNumber; i++)
+			this.tiles[i] = new Tile3D(this.context, values.get(i), GameHelper
+					.getInstance().getBackTextureResource(i + 1), GameHelper
+					.getInstance().getNumberTextureResource(values.get(i)),
+					R.drawable.white, centerX[i], centerY[i], halfSide);
 
 		// loads textures
 		gl.glEnable(GL10.GL_TEXTURE_2D);
 		for (final Tile3D tile : this.tiles)
 			tile.loadTexture(gl, this.context);
+	}
+
+	/**
+	 * @param openGLWidth
+	 * @return Size of a tile's half side
+	 */
+	private float getHalfSide(final float openGLWidth)
+	{
+		final GameHelper gameHelper = GameHelper.getInstance();
+		switch (gameHelper.getDifficulty())
+		{
+			case BEGINNER:
+				return ScreenUtils.isPortrait(this.context) ? openGLWidth / 4.5f
+						: openGLWidth / 5.0f;
+			case EASY:
+			case NORMAL:
+				return ScreenUtils.isPortrait(this.context) ? openGLWidth / 7.0f
+						: openGLWidth / 7.5f;
+			case EXPERT:
+			case MASTER:
+				return ScreenUtils.isPortrait(this.context) ? openGLWidth / 9.5f
+						: openGLWidth / 11.5f;
+		}
+		return ScreenUtils.isPortrait(this.context) ? openGLWidth / 7.0f
+				: openGLWidth / 7.5f;
+	}
+
+	/**
+	 * @param openGLWidth
+	 * @return Horizontal center coordinates for each tile
+	 */
+	private float[] getCenterX(final float openGLWidth)
+	{
+		final GameHelper gameHelper = GameHelper.getInstance();
+		switch (gameHelper.getDifficulty())
+		{
+			case BEGINNER:
+				final float centerBeginner[] = { -openGLWidth / 4.0f,
+						openGLWidth / 4.0f, -openGLWidth / 4.0f,
+						openGLWidth / 4.0f };
+				return centerBeginner;
+			case EASY:
+				final float centerEasy[] = { -openGLWidth / 3.0f, 0.0f,
+						openGLWidth / 3.0f, -openGLWidth / 3.0f, 0.0f,
+						openGLWidth / 3.0f };
+				return centerEasy;
+			case NORMAL:
+				final float centerNormal[] = { -openGLWidth / 3.0f, 0.0f,
+						openGLWidth / 3.0f, -openGLWidth / 3.0f, 0.0f,
+						openGLWidth / 3.0f, -openGLWidth / 3.0f, 0.0f,
+						openGLWidth / 3.0f };
+				return centerNormal;
+			case EXPERT:
+				final float centerExpert[] = { -openGLWidth / 3.0f, 0.0f,
+						openGLWidth / 3.0f, -openGLWidth / 3.0f, 0.0f,
+						openGLWidth / 3.0f, -openGLWidth / 3.0f, 0.0f,
+						openGLWidth / 3.0f, -openGLWidth / 3.0f, 0.0f,
+						openGLWidth / 3.0f };
+				return centerExpert;
+			case MASTER:
+				final float centerMaster[] = { -openGLWidth / 3.0f,
+						-openGLWidth / 9.0f, openGLWidth / 9.0f,
+						openGLWidth / 3.0f, -openGLWidth / 3.0f,
+						-openGLWidth / 9.0f, openGLWidth / 9.0f,
+						openGLWidth / 3.0f, -openGLWidth / 3.0f,
+						-openGLWidth / 9.0f, openGLWidth / 9.0f,
+						openGLWidth / 3.0f, -openGLWidth / 3.0f,
+						-openGLWidth / 9.0f, openGLWidth / 9.0f,
+						openGLWidth / 3.0f };
+				return centerMaster;
+		}
+		return null;
+	}
+
+	/**
+	 * @param openGLHeight
+	 * @return Vertical center coordinates for each tile
+	 */
+	private float[] getCenterY(final float openGLHeight)
+	{
+		final GameHelper gameHelper = GameHelper.getInstance();
+		switch (gameHelper.getDifficulty())
+		{
+			case BEGINNER:
+				final float centerBeginner[] = { openGLHeight / 4.0f,
+						openGLHeight / 4.0f, -openGLHeight / 4.0f,
+						-openGLHeight / 4.0f };
+				return centerBeginner;
+			case EASY:
+				final float centerEasy[] = { openGLHeight / 4.0f,
+						openGLHeight / 4.0f, openGLHeight / 4.0f,
+						-openGLHeight / 4.0f, -openGLHeight / 4.0f,
+						-openGLHeight / 4.0f };
+				return centerEasy;
+			case NORMAL:
+				final float centerNormal[] = { openGLHeight / 3.0f,
+						openGLHeight / 3.0f, openGLHeight / 3.0f, 0.0f, 0.0f,
+						0.0f, -openGLHeight / 3.0f, -openGLHeight / 3.0f,
+						-openGLHeight / 3.0f };
+				return centerNormal;
+			case EXPERT:
+				final float centerExpert[] = { openGLHeight / 3.0f,
+						openGLHeight / 3.0f, openGLHeight / 3.0f,
+						openGLHeight / 9.0f, openGLHeight / 9.0f,
+						openGLHeight / 9.0f, -openGLHeight / 9.0f,
+						-openGLHeight / 9.0f, -openGLHeight / 9.0f,
+						-openGLHeight / 3.0f, -openGLHeight / 3.0f,
+						-openGLHeight / 3.0f };
+				return centerExpert;
+			case MASTER:
+				final float centerMaster[] = { openGLHeight / 3.0f,
+						openGLHeight / 3.0f, openGLHeight / 3.0f,
+						openGLHeight / 3.0f, openGLHeight / 9.0f,
+						openGLHeight / 9.0f, openGLHeight / 9.0f,
+						openGLHeight / 9.0f, -openGLHeight / 9.0f,
+						-openGLHeight / 9.0f, -openGLHeight / 9.0f,
+						-openGLHeight / 9.0f, -openGLHeight / 3.0f,
+						-openGLHeight / 3.0f, -openGLHeight / 3.0f,
+						-openGLHeight / 3.0f };
+				return centerMaster;
+		}
+		return null;
 	}
 
 	//	/**
@@ -322,7 +434,7 @@ public class TileGameRenderer extends BasicGLRenderer
 	 */
 	private boolean tilesRotating()
 	{
-		for (int i = 0; i < 9; i++)
+		for (int i = 0; i < GameHelper.getInstance().getDifficulty().getTiles(); i++)
 			if (tileRotating(i))
 				return true;
 		return false;
@@ -333,7 +445,7 @@ public class TileGameRenderer extends BasicGLRenderer
 	 */
 	private int getRotatingTile()
 	{
-		for (int i = 0; i < 9; i++)
+		for (int i = 0; i < GameHelper.getInstance().getDifficulty().getTiles(); i++)
 			if (tileRotating(i))
 				return i;
 		return -1;
@@ -377,7 +489,7 @@ public class TileGameRenderer extends BasicGLRenderer
 	{
 		resetRotationArrays();
 		final int sequenceSize = GameHelper.getInstance().getSequence().size();
-		for (int i = 0; i < 9; i++)
+		for (int i = 0; i < GameHelper.getInstance().getDifficulty().getTiles(); i++)
 			if (this.tiles[i].getValue() <= sequenceSize)
 			{
 				this.angle[i] = 180.0f;
@@ -400,10 +512,12 @@ public class TileGameRenderer extends BasicGLRenderer
 	private void resetRotationArrays()
 	{
 		this.angle = new float[] { 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
-				0.0f, 0.0f };
+				0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f };
 		this.rotateBackToFront = new boolean[] { false, false, false, false,
-				false, false, false, false, false };
+				false, false, false, false, false, false, false, false, false,
+				false, false, false };
 		this.rotateFrontToBack = new boolean[] { false, false, false, false,
-				false, false, false, false, false };
+				false, false, false, false, false, false, false, false, false,
+				false, false, false };
 	}
 }

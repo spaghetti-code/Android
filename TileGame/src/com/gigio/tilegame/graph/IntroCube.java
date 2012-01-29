@@ -114,8 +114,8 @@ public class IntroCube
 	public void loadTexture(GL10 gl, Context context)
 	{
 		this.textureIDs = TextureUtils.loadTextures(gl, context, new int[] {
-				R.drawable.one, R.drawable.two, R.drawable.three,
-				R.drawable.four, R.drawable.five, R.drawable.six });
+				R.drawable.t1, R.drawable.t2, R.drawable.t3, R.drawable.t4,
+				R.drawable.t5, R.drawable.t6 });
 	}
 
 	/**

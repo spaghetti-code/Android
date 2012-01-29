@@ -18,7 +18,7 @@ public class Frame3D
 	private final FloatBuffer vertexBuffer;
 	private final float[] vertices;
 
-	public Frame3D(final float halfSide)
+	public Frame3D(final float halfSide, final float thickness)
 	{
 		this.vertices = new float[] {
 				// front
@@ -27,30 +27,30 @@ public class Frame3D
 				halfSide, halfSide, 0.0f,//
 				-halfSide, halfSide, 0.0f,//
 				// back
-				halfSide, -halfSide, -0.02f,//
-				-halfSide, -halfSide, -0.02f,//
-				-halfSide, halfSide, -0.02f,//
-				halfSide, halfSide, -0.02f,//
+				halfSide, -halfSide, -thickness,//
+				-halfSide, -halfSide, -thickness,//
+				-halfSide, halfSide, -thickness,//
+				halfSide, halfSide, -thickness,//
 				// left
-				-halfSide, -halfSide, -0.02f,//
+				-halfSide, -halfSide, -thickness,//
 				-halfSide, -halfSide, 0.0f,//
 				-halfSide, halfSide, 0.0f,//
-				-halfSide, halfSide, -0.02f,//
+				-halfSide, halfSide, -thickness,//
 				// right
 				halfSide, -halfSide, 0.0f,//
-				halfSide, -halfSide, -0.02f,//
-				halfSide, halfSide, -0.02f,//
+				halfSide, -halfSide, -thickness,//
+				halfSide, halfSide, -thickness,//
 				halfSide, halfSide, 0.0f,//
 				// top
 				-halfSide, halfSide, 0.0f,//
 				halfSide, halfSide, 0.0f,//
-				halfSide, halfSide, -0.02f,//
-				-halfSide, halfSide, -0.02f,//
+				halfSide, halfSide, -thickness,//
+				-halfSide, halfSide, -thickness,//
 				// bottom
 				halfSide, -halfSide, 0.0f,//
 				-halfSide, -halfSide, 0.0f,//
-				-halfSide, -halfSide, -0.02f,//
-				halfSide, -halfSide, -0.02f,//
+				-halfSide, -halfSide, -thickness,//
+				halfSide, -halfSide, -thickness,//
 		};
 
 		final ByteBuffer vbb = ByteBuffer
