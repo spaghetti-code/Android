@@ -13,6 +13,7 @@ import android.view.WindowManager;
 import android.widget.ImageButton;
 
 import com.gigio.tilegame.R;
+import com.gigio.tilegame.game.GameHelper;
 import com.gigio.tilegame.view.game.TileGameActivity;
 import com.gigio.tilegame.view.options.OptionsActivity;
 
@@ -33,6 +34,7 @@ public class IntroActivity extends Activity
 
 		this.view = (IntroView) findViewById(R.id.introView);
 
+		// start button
 		final ImageButton btnStart = (ImageButton) findViewById(R.id.btnStart);
 		btnStart.setOnClickListener(new OnClickListener()
 		{
@@ -45,6 +47,7 @@ public class IntroActivity extends Activity
 			}
 		});
 
+		// help button
 		final ImageButton btnHelp = (ImageButton) findViewById(R.id.btnHelp);
 		btnHelp.setOnClickListener(new OnClickListener()
 		{
@@ -55,6 +58,7 @@ public class IntroActivity extends Activity
 			}
 		});
 
+		// options button
 		final ImageButton btnOptions = (ImageButton) findViewById(R.id.btnOptions);
 		btnOptions.setOnClickListener(new OnClickListener()
 		{
@@ -106,5 +110,8 @@ public class IntroActivity extends Activity
 	{
 		super.onResume();
 		this.view.onResume();
+
+		// to stop the timer any time this activity is called
+		GameHelper.getInstance().stopTimer(false);
 	}
 }

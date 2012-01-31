@@ -1,10 +1,14 @@
 package com.gigio.tilegame.view.game;
 
 import android.app.Activity;
-import android.graphics.Color;
 import android.os.Bundle;
+import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ImageButton;
+import android.widget.SlidingDrawer.OnDrawerCloseListener;
+import android.widget.SlidingDrawer.OnDrawerOpenListener;
 import android.widget.TextView;
 
 import com.gigio.tilegame.R;
@@ -19,7 +23,7 @@ public class TileGameActivity extends Activity
 {
 	private TileGameView view;
 
-	private TextView lblWin;
+	//private TextView lblWin;
 
 	private TextView lblTries;
 
@@ -35,7 +39,7 @@ public class TileGameActivity extends Activity
 		setContentView(R.layout.game);
 
 		this.view = (TileGameView) findViewById(R.id.tileGameView1);
-		this.lblWin = (TextView) this.findViewById(R.id.lblWin);
+		//this.lblWin = (TextView) this.findViewById(R.id.lblWin);
 		this.lblTries = (TextView) this.findViewById(R.id.lblTriesValue);
 		this.lblTimer = (TextView) this.findViewById(R.id.lblTimeValue);
 
@@ -52,6 +56,64 @@ public class TileGameActivity extends Activity
 			GameHelper.getInstance().setGameStarted(true);
 		}
 
+		// sliding drawer
+		final WrappingSlidingDrawer slidingDrawer = (WrappingSlidingDrawer) this
+				.findViewById(R.id.slidingDrawer);
+		slidingDrawer.setOnDrawerOpenListener(new OnDrawerOpenListener()
+		{
+			@Override
+			public void onDrawerOpened()
+			{
+				GameHelper.getInstance().stopTimer(true);
+			}
+		});
+		slidingDrawer.setOnDrawerCloseListener(new OnDrawerCloseListener()
+		{
+			@Override
+			public void onDrawerClosed()
+			{
+				TileGameActivity.this.view.continueGame();
+			}
+		});
+
+		// home button
+		final ImageButton btnHome = (ImageButton) this
+				.findViewById(R.id.btnHome);
+		btnHome.setOnClickListener(new OnClickListener()
+		{
+			@Override
+			public void onClick(View v)
+			{
+				TileGameActivity.this.finish();
+			}
+		});
+
+		// restart button
+		final ImageButton btnRestart = (ImageButton) this
+				.findViewById(R.id.btnRestart);
+		btnRestart.setOnClickListener(new OnClickListener()
+		{
+			@Override
+			public void onClick(View v)
+			{
+				TileGameActivity.this.view.resetGame();
+				GameHelper.getInstance().setGameStarted(true);
+				slidingDrawer.close();
+			}
+		});
+
+		// continue button
+		final ImageButton btnContinue = (ImageButton) this
+				.findViewById(R.id.btnContinue);
+		btnContinue.setOnClickListener(new OnClickListener()
+		{
+			@Override
+			public void onClick(View v)
+			{
+				TileGameActivity.this.view.continueGame();
+				slidingDrawer.close();
+			}
+		});
 	}
 
 	@Override
@@ -67,8 +129,9 @@ public class TileGameActivity extends Activity
 	 */
 	public void updateViewsOnGameStarted()
 	{
-		this.lblWin.setText(R.string.game_started);
-		this.lblWin.setTextColor(Color.LTGRAY);
+		// FIXME
+		//this.lblWin.setText(R.string.game_started);
+		//this.lblWin.setTextColor(Color.LTGRAY);
 
 		this.view.getRenderer().resetGame();
 	}
@@ -78,8 +141,9 @@ public class TileGameActivity extends Activity
 	 */
 	public void updateViewsOnGameWon()
 	{
-		this.lblWin.setText(R.string.win);
-		this.lblWin.setTextColor(Color.GREEN);
+		// FIXME
+		//		this.lblWin.setText(R.string.win);
+		//		this.lblWin.setTextColor(Color.GREEN);
 	}
 
 	/**

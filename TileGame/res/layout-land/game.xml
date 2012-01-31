@@ -59,27 +59,63 @@
                 android:layout_height="wrap_content"
                 android:padding="10dp"
                 android:text="00:00" />
-
         </LinearLayout>
 
         <LinearLayout
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:orientation="horizontal"
-            android:padding="10dp" >
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:gravity="bottom"
+            android:orientation="vertical" >
 
-            <TextView
-                android:id="@+id/lblWin"
-                android:layout_width="wrap_content"
+            <com.gigio.tilegame.view.game.WrappingSlidingDrawer
+                android:id="@+id/slidingDrawer"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:padding="10dp"
-                android:text=""
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="#00FF00"
-                android:textStyle="bold" />
+                android:content="@+id/contentLayout"
+                android:handle="@+id/btnPause" >
+
+                <ImageButton
+                    android:id="@+id/btnPause"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@null"
+                    android:src="@drawable/pause_button_selector" />
+
+                <LinearLayout
+                    xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:id="@+id/contentLayout"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:orientation="horizontal"
+                    android:background="@android:color/darker_gray" >
+
+                    <ImageButton
+                        android:id="@+id/btnHome"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:background="@null"
+                        android:src="@drawable/home_button_selector" />
+                    
+                    <ImageButton
+                        android:id="@+id/btnRestart"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:background="@null"
+                        android:src="@drawable/restart_button_selector" />
+                    
+                    <ImageButton
+                        android:id="@+id/btnContinue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:background="@null"
+                        android:src="@drawable/continue_button_selector" />
+                </LinearLayout>
+            </com.gigio.tilegame.view.game.WrappingSlidingDrawer>
         </LinearLayout>
     </LinearLayout>
 
